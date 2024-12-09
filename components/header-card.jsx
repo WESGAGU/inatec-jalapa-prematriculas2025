@@ -4,7 +4,7 @@ const HeaderCard = () => {
     return (  
         <div className="p-4">
         {/* Tarjeta principal */}
-        <Card className="block w-80 md:w-4/5 lg:w-3/6 mx-auto shadow-lg">
+        <Card className="block w-96 md:w-4/5 lg:w-3/6 mx-auto shadow-lg">
           <CardHeader>
             <CardTitle className="text-center text-2xl mb-2">
               Prematrícula en Línea

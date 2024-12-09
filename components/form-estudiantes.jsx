@@ -144,7 +144,7 @@ const FormEstudiantes = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-80 md:w-4/5 lg:w-3/6 mx-auto p-4 border rounded shadow-xl mb-5">
+    <form onSubmit={handleSubmit} className="w-96 md:w-4/5 lg:w-3/6 mx-auto p-4 border rounded shadow-xl mb-5">
       <h2 className='block text-center font-bold mb-5'>DATOS PERSONALES</h2>
       {/* Campo de nombres */}
       <div className="mb-4">

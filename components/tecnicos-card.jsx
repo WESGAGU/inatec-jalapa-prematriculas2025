@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const TecnicosCard = () => {
   return (
- <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center p-6 w-80 md:w-4/5 lg:w-3/6 mx-auto shadow-xl mt-5 mb-5">
+ <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center p-6 w-96 md:w-4/5 lg:w-3/6 mx-auto shadow-xl mt-5 mb-5">
       {/* Columna de la Imagen */}
       <div className="flex justify-center">
         <Image

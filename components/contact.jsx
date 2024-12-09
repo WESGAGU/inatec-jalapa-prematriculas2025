@@ -2,7 +2,7 @@ import ContactAcordion from "@/components/contact-acordion";
 
 const Contact = () =>{
     return (
-      <div className="w-80 md:w-4/5 lg:w-3/6 mx-auto p-6 border border-gray-200 rounded-lg shadow-lg mt-3 mb-5 sm:px-5">
+      <div className="w-96 md:w-4/5 lg:w-3/6 mx-auto p-6 border border-gray-200 rounded-lg shadow-lg mt-3 mb-5 sm:px-5">
         <h2 className="text-center text-2xl font-bold mb-8">Contáctenos</h2>
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4">
