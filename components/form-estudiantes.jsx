@@ -295,6 +295,7 @@ const FormEstudiantes = () => {
           name="personas_hogar"
           value={formData.personas_hogar}
           onChange={handleChange}
+          placeholder='Numero de personas que viven en su hogar'
           className="w-full p-2 border rounded border-blue-300"
           required
         />
