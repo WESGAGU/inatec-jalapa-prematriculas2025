@@ -106,7 +106,7 @@ const FormEstudiantes = () => {
         Swal.fire({
           icon: 'success',
           title: 'Éxito',
-          text: 'Prematricula registrada exitosamente',
+          text: 'Prematricula registrada exitosamente, se le contactara a finales de enero para seguir con el proceso de matricula',
         });
         // Limpiar el formulario después de enviar los datos
         setFormData({
