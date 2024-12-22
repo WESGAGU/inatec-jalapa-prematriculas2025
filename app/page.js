@@ -6,6 +6,7 @@ import Contact from "@/components/contact";
 import TecnicosCard from "@/components/tecnicos-card";
 import { User } from "lucide-react";
 import Link from "next/link";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false); // Estado para mostrar u ocultar el formulario
@@ -16,6 +17,7 @@ export default function Home() {
 
   return (
     <div>
+       <Analytics/>
       <HeaderCard />
       <div className="flex justify-center mt-5">
         <button
