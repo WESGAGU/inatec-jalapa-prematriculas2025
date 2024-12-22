@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Swal from 'sweetalert2';
+import Image from 'next/image';
 
 const FormEstudiantes = () => {
   const [formData, setFormData] = useState({
@@ -444,6 +445,13 @@ const FormEstudiantes = () => {
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">IMAGEN DEL DOCUMENTO:</label>
         <span className='block text-gray-500 mb-3 text-md md:text-lg'>Aqui debera subir una imagen de su cedula, en caso de no tener diploma de bachicherato o primaria que verifique sus Nombres y Apellidos</span>
+        <Image
+          src="/indicativo2.png"
+          width={200}
+          height={100}
+          alt="indicativo"
+          className="w-full"
+        />
         <input
           type="file"
           onChange={handleFileChange}
