@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import EstudiantePDF from '@/components/estudiante-pdf';
+import { Analytics } from "@vercel/analytics/react"
 
 const ViewDatosEstudiantes = () => {
   const [estudiantes, setEstudiantes] = useState([]);
@@ -90,6 +91,7 @@ const ViewDatosEstudiantes = () => {
 
   return (
     <div>
+      <Analytics/>
       <h1 className="text-2xl font-bold mb-4 ml-4">Datos de Estudiantes</h1>
       <div className="mb-4 flex space-x-4">
         <input
