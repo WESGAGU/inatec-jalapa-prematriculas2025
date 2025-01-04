@@ -1,42 +1,26 @@
 import React from "react";
-import { Document, Page, Text, View, Image, StyleSheet } from "@react-pdf/renderer";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  Image,
+  StyleSheet,
+} from "@react-pdf/renderer";
 
-// Estilos
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
     padding: 10,
   },
-  headerContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  section: {
     marginBottom: 10,
   },
-  headerImage: {
-    width: 130,
-    height: 30,
-  },
-  horizontal: {
-    flexDirection: "row",
-    marginTop: 3,
-  },
-  fontSize: {
-    fontSize: 10, // Tamaño de fuente reducido
-    marginTop: 3,
-  },
-  datoPersonales: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  sectionTitle: {
-    textAlign: "center",
-    marginTop: 10,
-    fontSize: 14,
+  label: {
     fontWeight: "bold",
   },
-  borderBottom: {
-    borderBottom: 1,
-    fontSize: 10, // Tamaño de fuente reducido
+  value: {
+    marginLeft: 10,
   },
   documentoContainer: {
     width: "100%",
@@ -49,290 +33,890 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
     maxHeight: "100%",
   },
+  header: {
+    fontSize: 18,
+    marginBottom: 20,
+    textAlign: "center",
+    color: "black",
+  },
+  subHeader: {
+    fontSize: 14,
+    marginBottom: 10,
+    color: "black",
+  },
+  headerImage: {
+    width: 130,
+    height: 30,
+    marginRight: 10,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 5,
+  },
+  line: {
+    border: 1,
+    position: "relative",
+    left: 90,
+    width: 350,
+  },
+  horizontal: {
+    flexDirection: "row",
+    marginTop: 3,
+  },
+  fontSize: {
+    fontSize: 13,
+    marginTop: 3,
+  },
+  datoPersonales: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
 });
 
-// Función para formatear la fecha
+// Función para formatear la fecha corta
 const formatShortDate = (dateString) => {
   const date = new Date(dateString);
   const day = date.getDate();
-  const month = date.getMonth() + 1;
+  const month = date.getMonth() + 1; // Los meses en JavaScript son base 0
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
 };
 
 const EstudiantePDF = ({ estudiante }) => (
   <Document>
-    {/* Primera página */}
+    {/* IMAGENES DEL PDF */}
     <Page size="A4" style={styles.page}>
-      {/* Encabezado */}
       <View style={styles.headerContainer}>
         <Image src="/pueblo-presidente.png" style={styles.headerImage} />
         <Text>HOJA DE MATRÍCULA</Text>
         <Image src="/victorias-logo.png" style={styles.headerImage} />
       </View>
 
-      {/* Datos del centro y fecha */}
-      <View>
+      {/* TEXT CENTRO */}
+      <View style={{ marginLeft: 5 }}>
         <View style={styles.horizontal}>
           <Text style={styles.fontSize}>CENTRO:</Text>
-          <Text style={[styles.borderBottom, { width: 350, marginLeft: 5 }]}>
-            Tecnológico de Jalapa
+          <Text
+            style={{ borderBottom: 1, width: 350, marginLeft: 5, fontSize: 15 }}
+          >
+            Tecnolólogico de Jalapa
           </Text>
         </View>
+
+        {/* TEXT FECHA DE REGISTRO */}
         <View style={styles.horizontal}>
           <Text style={styles.fontSize}>FECHA:</Text>
-          <Text style={[styles.borderBottom, { width: 200, marginLeft: 15 }]}>
+          <Text
+            style={{
+              borderBottom: 1,
+              width: 200,
+              marginLeft: 15,
+              fontSize: 14,
+            }}
+          >
             {formatShortDate(estudiante.fecha_registro)}
           </Text>
         </View>
       </View>
 
-      {/* Datos personales */}
-      <Text style={styles.sectionTitle}>DATOS PERSONALES</Text>
+      {/* DATOS PERSONALES */}
+      <View>
+        <Text
+          style={{
+            textAlign: "center",
+            marginTop: 10,
+            fontSize: 15,
+            fontWeight: "bold",
+          }}
+        >
+          DATOS PERSONALES
+        </Text>
+      </View>
+
       <View style={styles.datoPersonales}>
-        {/* Columna izquierda */}
+        {/* COLUMNA IZQUIERDA */}
         <View>
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>NACIONALIDAD:</Text>
-            <Text style={[styles.borderBottom, { width: 180, marginLeft: 10 }]}>
-              Nicaragüense
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 180,
+                marginLeft: 10,
+                fontSize: 14,
+              }}
+            >
+              Nicaraguense
             </Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>FECHA DE NACIMIENTO:</Text>
-            <Text style={[styles.borderBottom, { width: 127, marginLeft: 10 }]}>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 127,
+                marginLeft: 10,
+                fontSize: 14,
+              }}
+            >
               {formatShortDate(estudiante.fecha_nacimiento)}
             </Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>NOMBRES:</Text>
-            <Text style={[styles.borderBottom, { width: 211, marginLeft: 10 }]}>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 211,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            >
               {estudiante.nombres}
             </Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>SEXO:</Text>
-            <Text style={[styles.borderBottom, { width: 240, marginLeft: 10 }]}>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 240,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            >
               {estudiante.sexo}
             </Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>MUNICIPIO DE NACIMIENTO:</Text>
-            <Text style={[styles.borderBottom, { width: 100, marginLeft: 10 }]}>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 100,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            >
               {estudiante.municipio}
             </Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>DEPART DOMICILIAR:</Text>
-            <Text style={[styles.borderBottom, { width: 150, marginLeft: 10 }]}>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 150,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            >
               {estudiante.departamento}
             </Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>COMUNIDAD DOMICILIAR:</Text>
-            <Text style={[styles.borderBottom, { width: 140, marginLeft: 15 }]}>
-              {estudiante.comunidad}
-            </Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 140,
+                marginLeft: 15,
+                fontSize: 12,
+              }}
+            >{estudiante.comunidad}</Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>DIRECCIÓN DOMICILIAR:</Text>
-            <Text style={[styles.borderBottom, { width: 140, marginLeft: 10 }]}>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 140,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            >
               {estudiante.direccion}
             </Text>
           </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>EMAIL:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 240,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>NIVEL ACADEMICO:</Text>
-            <Text style={[styles.borderBottom, { width: 160, marginLeft: 10 }]}>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 160,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            >
               {estudiante.nivel_academico}
             </Text>
           </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>DISCAPACIDAD:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 180,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>MATRICULA:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 210,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>AÑO EGRESO DE BACHILLERATO:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 100,
+                marginLeft: 25,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
         </View>
 
-        {/* Columna derecha */}
-        <View>
+        {/* COLUMNA DERECHA */}
+        <View style={{ marginLeft: 15 }}>
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>IDENTIFICACIÓN:</Text>
-            <Text style={[styles.borderBottom, { width: 150, marginLeft: 10 }]}>
-              {/* Valor vacío */}
-            </Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 150,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            ></Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>CARNET:</Text>
-            <Text style={[styles.borderBottom, { width: 200, marginLeft: 10 }]}>
-              {/* Valor vacío */}
-            </Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 200,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            ></Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>APELLIDOS:</Text>
-            <Text style={[styles.borderBottom, { width: 180, marginLeft: 10 }]}>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 180,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            >
               {estudiante.apellidos}
             </Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>ESTADO CIVIL:</Text>
-            <Text style={[styles.borderBottom, { width: 166, marginLeft: 10 }]}>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 166,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            >
               Solter@
             </Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>ETNIA:</Text>
-            <Text style={[styles.borderBottom, { width: 215, marginLeft: 10 }]}>
-              {/* Valor vacío */}
-            </Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 215,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            ></Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>MUNICIPIO DOMICILIAR:</Text>
-            <Text style={[styles.borderBottom, { width: 105, marginLeft: 10 }]}>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 105,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            >
               {estudiante.municipio}
             </Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>N° PERSONAS EN EL HOGAR:</Text>
-            <Text style={[styles.borderBottom, { width: 72, marginLeft: 10 }]}>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 72,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            >
               {estudiante.personas_hogar}
             </Text>
           </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>PROFESION:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 172,
+                marginLeft: 15,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>CELULAR:</Text>
-            <Text style={[styles.borderBottom, { width: 190, marginLeft: 15 }]}>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 190,
+                marginLeft: 15,
+                fontSize: 12,
+              }}
+            >
               {estudiante.telefono}
             </Text>
           </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>ÁREA:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 215,
+                marginLeft: 15,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>IDIOMA:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 205,
+                marginLeft: 15,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>TIPO DE SANGRE:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 145,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>AÑO DE SERVICIO:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 140,
+                marginLeft: 10,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>PROGRAMA DE EGRESO:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 115,
+                marginLeft: 30,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
         </View>
       </View>
 
-      {/* Datos laborales */}
-      <Text style={styles.sectionTitle}>II. DATOS LABORALES DEL PROTAGONISTA</Text>
+      {/* SEGUNDA SECCION DE DATOS LABORALES */}
+      <View>
+        <Text
+          style={{
+            textAlign: "center",
+            marginTop: 10,
+            fontSize: 15,
+            fontWeight: "bold",
+          }}
+        >
+          II. DATOS LABORALES DEL PROTAGONISTA
+        </Text>
+      </View>
+
       <View style={styles.datoPersonales}>
-        {/* Columna izquierda */}
-        <View>
+        {/* COLUMNA IZQUIERDA */}
+        <View style={{ width: "50%" }}>
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>EMPRESA:</Text>
-            <Text style={[styles.borderBottom, { width: 180, marginLeft: 10 }]}>
-              {/* Valor vacío */}
-            </Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 20,
+                fontSize: 14,
+              }}
+            ></Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>DEPARTAMENTO:</Text>
-            <Text style={[styles.borderBottom, { width: 150, marginLeft: 10 }]}>
-              {/* Valor vacío */}
-            </Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 39,
+                fontSize: 14,
+              }}
+            ></Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>TELEFONO:</Text>
-            <Text style={[styles.borderBottom, { width: 180, marginLeft: 10 }]}>
-              {/* Valor vacío */}
-            </Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 20,
+                fontSize: 14,
+              }}
+            ></Text>
           </View>
         </View>
 
-        {/* Columna derecha */}
-        <View>
+        {/* COLUMNA DERECHA */}
+        <View style={{ width: "50%", marginLeft: 40 }}>
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>DIRECCION:</Text>
-            <Text style={[styles.borderBottom, { width: 150, marginLeft: 10 }]}>
-              {/* Valor vacío */}
-            </Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 23,
+                fontSize: 12,
+              }}
+            ></Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>MUNICIPIO:</Text>
-            <Text style={[styles.borderBottom, { width: 150, marginLeft: 10 }]}>
-              {/* Valor vacío */}
-            </Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 25,
+                fontSize: 12,
+              }}
+            ></Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>CARGO:</Text>
-            <Text style={[styles.borderBottom, { width: 150, marginLeft: 10 }]}>
-              {/* Valor vacío */}
-            </Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 15,
+                fontSize: 12,
+              }}
+            ></Text>
           </View>
         </View>
       </View>
 
-      {/* En caso de emergencia */}
-      <Text style={styles.sectionTitle}>III. EN CASO DE EMERGENCIA NOTIFICAR A</Text>
+      {/* TERCERA SECCION EN CASO DE EMERGENCIA NOTIFICAR A */}
+      <View>
+        <Text
+          style={{
+            textAlign: "center",
+            marginTop: 10,
+            fontSize: 15,
+            fontWeight: "extrabold",
+          }}
+        >
+          III. EN CASO DE EMERGENCIA NOTIFICAR A
+        </Text>
+      </View>
+
       <View style={styles.datoPersonales}>
-        {/* Columna izquierda */}
-        <View>
+        {/* COLUMNA IZQUIERDA */}
+        <View style={{ width: "50%" }}>
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>NOMBRE:</Text>
-            <Text style={[styles.borderBottom, { width: 180, marginLeft: 10 }]}>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 20,
+                fontSize: 14,
+              }}
+            >
               {estudiante.emergencia_nombres}
             </Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>DIRECCION:</Text>
-            <Text style={[styles.borderBottom, { width: 150, marginLeft: 10 }]}>
-              {/* Valor vacío */}
-            </Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 39,
+                fontSize: 14,
+              }}
+            ></Text>
           </View>
         </View>
 
-        {/* Columna derecha */}
-        <View>
+        {/* COLUMNA DERECHA */}
+        <View style={{ width: "50%", marginLeft: 40 }}>
           <View style={styles.horizontal}>
-            <Text style={styles.fontSize}>PARENTESCO:</Text>
-            <Text style={[styles.borderBottom, { width: 150, marginLeft: 10 }]}>
+            <Text style={styles.fontSize}>PATENTESCO:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 35,
+                fontSize: 12,
+              }}
+            >
               {estudiante.emergencia_parentezco}
             </Text>
           </View>
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>TELEFONO:</Text>
-            <Text style={[styles.borderBottom, { width: 150, marginLeft: 10 }]}>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 25,
+                fontSize: 12,
+              }}
+            >
               {estudiante.emergencia_telefono}
             </Text>
           </View>
         </View>
       </View>
 
-      {/* Datos de especialidad o curso */}
-      <Text style={styles.sectionTitle}>IV. DATOS DE ESPECIALIDAD O CURSO</Text>
-      <View style={styles.datoPersonales}>
-        {/* Columna izquierda */}
-        <View>
-          <View style={styles.horizontal}>
-            <Text style={styles.fontSize}>CURSO:</Text>
-            <Text style={[styles.borderBottom, { width: 180, marginLeft: 10 }]}>
-              {estudiante.tecnico}
-            </Text>
-          </View>
-        </View>
-
-        {/* Columna derecha */}
-        <View>
-          <View style={styles.horizontal}>
-            <Text style={styles.fontSize}>ESTRATEGIA:</Text>
-            <Text style={[styles.borderBottom, { width: 150, marginLeft: 10 }]}>
-              {/* Valor vacío */}
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      {/* Documentos entregados */}
-      <Text style={styles.sectionTitle}>V. DOCUMENTOS ENTREGADOS</Text>
-      <View style={styles.horizontal}>
-        <Text style={styles.fontSize}>OBSERVACIONES:</Text>
-        <Text style={[styles.borderBottom, { width: 350, marginLeft: 10 }]}>
-          {/* Valor vacío */}
+      {/* CUARTA DATOS DE ESPECIALIDAD O CURSO */}
+      <View>
+        <Text
+          style={{
+            textAlign: "center",
+            marginTop: 10,
+            fontSize: 15,
+            fontWeight: "extrabold",
+          }}
+        >
+          IV. DATOS DE ESPECIALIDAD O CURSO
         </Text>
       </View>
 
-      {/* Firmas */}
       <View style={styles.datoPersonales}>
-        <View>
-          <Text style={[styles.borderBottom, { width: 150, marginLeft: 60, marginTop: 25 }]} />
-          <Text style={{ fontSize: 10, marginTop: 2 }}>FIRMA PROTAGONISTA</Text>
+        {/* COLUMNA IZQUIERDA */}
+        <View style={{ width: "50%" }}>
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>DEPARTAMENTO:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 30,
+                fontSize: 14,
+              }}
+            ></Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>COMUNIDAD:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 39,
+                fontSize: 14,
+              }}
+            ></Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>DIRECCION DE LA ESCUELA:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 125,
+                fontSize: 14,
+              }}
+            ></Text>
+          </View>
+          <View
+            style={{ borderBottom: 1, marginTop: 16, marginBottom: 2 }}
+          ></View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>CURSO:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 15,
+                fontSize: 14,
+              }}
+            >
+              {estudiante.tecnico}
+            </Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>GRUPO:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 15,
+                fontSize: 14,
+              }}
+            ></Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>AÑO:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 15,
+                fontSize: 14,
+              }}
+            ></Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>HORARIO:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 20,
+                fontSize: 14,
+              }}
+            ></Text>
+          </View>
         </View>
+
+        {/* COLUMNA DERECHA */}
+        <View style={{ width: "50%", marginLeft: 40 }}>
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>MUNICIPIO:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 30,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>NOMBRE DE LA ESCUELA:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 105,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
+          <View
+            style={{ borderBottom: 1, marginTop: 16, marginBottom: 2 }}
+          ></View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>ESTRATEGIA:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 30,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>MODO DE FORMACION:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 80,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>TURNO:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 20,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
+
+          <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>FECHA DE INICIO:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: "100%",
+                marginLeft: 50,
+                fontSize: 12,
+              }}
+            ></Text>
+          </View>
+        </View>
+      </View>
+
+      {/* QUINTA SECCION DOCUMENTOS ENTREGADOS */}
+      <View>
+        <Text
+          style={{
+            textAlign: "center",
+            marginTop: 10,
+            fontSize: 15,
+            fontWeight: "extrabold",
+          }}
+        >
+          V. DOCUMENTOS ENTREGADOS
+        </Text>
+      </View>
+
+      <View style={styles.horizontal}>
+            <Text style={styles.fontSize}>OBSERVACIONES:</Text>
+            <Text
+              style={{
+                borderBottom: 1,
+                width: 350,
+                marginLeft: 10,
+                fontSize: 14,
+              }}
+            ></Text>
+          </View>
+
+   
+
+      <View style={styles.datoPersonales}>
+        {/* COLUMNA IZQUIERDA */}
+        <View style={{ width: "50%", textAlign:"center" }}>
+          <View>
+          <Text
+              style={{
+                borderBottom: 1,
+                width: "60%",
+                marginLeft: 60,
+                fontSize: 14,
+                marginTop: 25
+              }}
+            ></Text>
+            <Text style={{fontSize: 12, marginTop:2}}>FIRMA PROTAGONISTA</Text>
+          </View>
+        </View>
+
+        {/* COLUMNA DERECHA */}
+        <View style={{ width: "50%", marginLeft: 40, textAlign:"center" }}>
         <View>
-          <Text style={[styles.borderBottom, { width: 150, marginLeft: 65, marginTop: 25 }]} />
-          <Text style={{ fontSize: 10, marginTop: 2 }}>FIRMA REGISTRO</Text>
+          <Text
+              style={{
+                borderBottom: 1,
+                width: "50%",
+                marginLeft: 65,
+                fontSize: 14,
+                marginTop: 25
+              }}
+            ></Text>
+            <Text style={{fontSize: 12, marginTop:2}}>FIRMA REGISTRO</Text>
+          </View>
         </View>
       </View>
     </Page>
 
-    {/* Segunda página (imagen del documento) */}
+    {/* SEGUNDA PAGINA DEL PDF, DONDE ESTA LA IMAGEN DEL DOCUMENTO */}
     <Page size="A4" style={styles.page}>
+      <View style={styles.header}>
+        <Text>DOCUMENTO DEL ESTUDIANTE</Text>
+      </View>
+
       <View style={styles.documentoContainer}>
         <Image src={estudiante.documento} style={styles.documentoImage} />
       </View>
