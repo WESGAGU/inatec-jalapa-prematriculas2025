@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     color: "black",
   },
   headerImage: {
-    width: 130,
+    width: 110,
     height: 30,
     marginRight: 10,
   },
@@ -65,8 +65,9 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   fontSize: {
-    fontSize: 13,
+    fontSize: 11,
     marginTop: 3,
+    fontWeight: "extrabold",
   },
   datoPersonales: {
     flexDirection: "row",
@@ -90,7 +91,7 @@ const EstudiantePDF = ({ estudiante }) => (
       <View style={styles.headerContainer}>
         <Image src="/pueblo-presidente.png" style={styles.headerImage} />
         <Text>HOJA DE MATRÍCULA</Text>
-        <Image src="/victorias-logo.png" style={styles.headerImage} />
+        <Image src="/2025.png" style={styles.headerImage} />
       </View>
 
       {/* TEXT CENTRO */}
@@ -98,7 +99,7 @@ const EstudiantePDF = ({ estudiante }) => (
         <View style={styles.horizontal}>
           <Text style={styles.fontSize}>CENTRO:</Text>
           <Text
-            style={{ borderBottom: 1, width: 350, marginLeft: 5, fontSize: 15 }}
+            style={{ borderBottom: 1, width: 350, marginLeft: 5, fontSize: 13 }}
           >
             Tecnolólogico de Jalapa
           </Text>
@@ -112,7 +113,7 @@ const EstudiantePDF = ({ estudiante }) => (
               borderBottom: 1,
               width: 200,
               marginLeft: 15,
-              fontSize: 14,
+              fontSize: 13,
             }}
           >
             {formatShortDate(estudiante.fecha_registro)}
@@ -136,29 +137,31 @@ const EstudiantePDF = ({ estudiante }) => (
 
       <View style={styles.datoPersonales}>
         {/* COLUMNA IZQUIERDA */}
-        <View>
+        <View style={{width: "50%"}}>
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>NACIONALIDAD:</Text>
             <Text
               style={{
                 borderBottom: 1,
-                width: 180,
-                marginLeft: 10,
-                fontSize: 14,
+                width: "100%",
+                marginLeft: 30,
+                fontSize: 12,
               }}
             >
               Nicaraguense
             </Text>
           </View>
 
+          
+
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>FECHA DE NACIMIENTO:</Text>
             <Text
               style={{
                 borderBottom: 1,
-                width: 127,
-                marginLeft: 10,
-                fontSize: 14,
+                width: "100%",
+                marginLeft: 70,
+                fontSize: 12,
               }}
             >
               {formatShortDate(estudiante.fecha_nacimiento)}
@@ -170,8 +173,8 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 211,
-                marginLeft: 10,
+                width: "100%",
+                marginLeft: 20,
                 fontSize: 12,
               }}
             >
@@ -184,7 +187,7 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 240,
+                width: "100%",
                 marginLeft: 10,
                 fontSize: 12,
               }}
@@ -198,8 +201,8 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 100,
-                marginLeft: 10,
+                width: "100%",
+                marginLeft: 90,
                 fontSize: 12,
               }}
             >
@@ -212,8 +215,8 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 150,
-                marginLeft: 10,
+                width: "100%",
+                marginLeft: 50,
                 fontSize: 12,
               }}
             >
@@ -227,7 +230,7 @@ const EstudiantePDF = ({ estudiante }) => (
               style={{
                 borderBottom: 1,
                 width: 140,
-                marginLeft: 15,
+                marginLeft: 10,
                 fontSize: 12,
               }}
             >{estudiante.comunidad}</Text>
@@ -239,8 +242,8 @@ const EstudiantePDF = ({ estudiante }) => (
               style={{
                 borderBottom: 1,
                 width: 140,
-                marginLeft: 10,
-                fontSize: 12,
+                marginLeft: 8,
+                fontSize: 11,
               }}
             >
               {estudiante.direccion}
@@ -252,7 +255,7 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 240,
+                width: "100%",
                 marginLeft: 10,
                 fontSize: 12,
               }}
@@ -264,8 +267,8 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 160,
-                marginLeft: 10,
+                width: "100%",
+                marginLeft: 45,
                 fontSize: 12,
               }}
             >
@@ -278,8 +281,8 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 180,
-                marginLeft: 10,
+                width: "100%",
+                marginLeft: 25,
                 fontSize: 12,
               }}
             ></Text>
@@ -290,8 +293,8 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 210,
-                marginLeft: 10,
+                width: "100%",
+                marginLeft: 25,
                 fontSize: 12,
               }}
             ></Text>
@@ -302,8 +305,8 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 100,
-                marginLeft: 25,
+                width: "100%",
+                marginLeft: 120,
                 fontSize: 12,
               }}
             ></Text>
@@ -311,14 +314,14 @@ const EstudiantePDF = ({ estudiante }) => (
         </View>
 
         {/* COLUMNA DERECHA */}
-        <View style={{ marginLeft: 15 }}>
+        <View style={{marginLeft: 15,  width: "55%" }}>
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>IDENTIFICACIÓN:</Text>
             <Text
               style={{
                 borderBottom: 1,
-                width: 150,
-                marginLeft: 10,
+                width: "100%",
+                marginLeft: 25,
                 fontSize: 12,
               }}
             ></Text>
@@ -329,7 +332,7 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 200,
+                width: "100%",
                 marginLeft: 10,
                 fontSize: 12,
               }}
@@ -341,8 +344,8 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 180,
-                marginLeft: 10,
+                width: "100%",
+                marginLeft: 20,
                 fontSize: 12,
               }}
             >
@@ -355,8 +358,8 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 166,
-                marginLeft: 10,
+                width: "100%",
+                marginLeft: 25,
                 fontSize: 12,
               }}
             >
@@ -369,7 +372,7 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 215,
+                width: "100%",
                 marginLeft: 10,
                 fontSize: 12,
               }}
@@ -381,8 +384,8 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 105,
-                marginLeft: 10,
+                width: "100%",
+                marginLeft: 60,
                 fontSize: 12,
               }}
             >
@@ -395,8 +398,8 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 72,
-                marginLeft: 10,
+                width: "100%",
+                marginLeft: 90,
                 fontSize: 12,
               }}
             >
@@ -409,7 +412,7 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 172,
+                width: "100%",
                 marginLeft: 15,
                 fontSize: 12,
               }}
@@ -421,7 +424,7 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 190,
+                width: "100%",
                 marginLeft: 15,
                 fontSize: 12,
               }}
@@ -435,7 +438,7 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 215,
+                width: "100%",
                 marginLeft: 15,
                 fontSize: 12,
               }}
@@ -447,7 +450,7 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 205,
+                width: "100%",
                 marginLeft: 15,
                 fontSize: 12,
               }}
@@ -459,8 +462,8 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 145,
-                marginLeft: 10,
+                width: "100%",
+                marginLeft: 30,
                 fontSize: 12,
               }}
             ></Text>
@@ -471,8 +474,8 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 140,
-                marginLeft: 10,
+                width: "100%",
+                marginLeft: 30,
                 fontSize: 12,
               }}
             ></Text>
@@ -483,8 +486,8 @@ const EstudiantePDF = ({ estudiante }) => (
             <Text
               style={{
                 borderBottom: 1,
-                width: 115,
-                marginLeft: 30,
+                width: "100%",
+                marginLeft: 60,
                 fontSize: 12,
               }}
             ></Text>
@@ -516,7 +519,7 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: "100%",
                 marginLeft: 20,
-                fontSize: 14,
+                fontSize: 12,
               }}
             ></Text>
           </View>
@@ -528,7 +531,7 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: "100%",
                 marginLeft: 39,
-                fontSize: 14,
+                fontSize: 12,
               }}
             ></Text>
           </View>
@@ -540,14 +543,14 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: "100%",
                 marginLeft: 20,
-                fontSize: 14,
+                fontSize: 12,
               }}
             ></Text>
           </View>
         </View>
 
         {/* COLUMNA DERECHA */}
-        <View style={{ width: "50%", marginLeft: 40 }}>
+        <View style={{ width: "55%", marginLeft: 15 }}>
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>DIRECCION:</Text>
             <Text
@@ -610,7 +613,7 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: "100%",
                 marginLeft: 20,
-                fontSize: 14,
+                fontSize: 12,
               }}
             >
               {estudiante.emergencia_nombres}
@@ -624,14 +627,14 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: "100%",
                 marginLeft: 39,
-                fontSize: 14,
+                fontSize: 12,
               }}
             ></Text>
           </View>
         </View>
 
         {/* COLUMNA DERECHA */}
-        <View style={{ width: "50%", marginLeft: 40 }}>
+        <View style={{ width: "55%", marginLeft: 15 }}>
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>PATENTESCO:</Text>
             <Text
@@ -686,7 +689,7 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: "100%",
                 marginLeft: 30,
-                fontSize: 14,
+                fontSize: 12,
               }}
             ></Text>
           </View>
@@ -698,7 +701,7 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: "100%",
                 marginLeft: 39,
-                fontSize: 14,
+                fontSize: 12,
               }}
             ></Text>
           </View>
@@ -710,7 +713,7 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: "100%",
                 marginLeft: 125,
-                fontSize: 14,
+                fontSize: 12,
               }}
             ></Text>
           </View>
@@ -725,7 +728,7 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: "100%",
                 marginLeft: 15,
-                fontSize: 14,
+                fontSize: 12,
               }}
             >
               {estudiante.tecnico}
@@ -739,7 +742,7 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: "100%",
                 marginLeft: 15,
-                fontSize: 14,
+                fontSize: 12,
               }}
             ></Text>
           </View>
@@ -751,7 +754,7 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: "100%",
                 marginLeft: 15,
-                fontSize: 14,
+                fontSize: 12,
               }}
             ></Text>
           </View>
@@ -763,14 +766,14 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: "100%",
                 marginLeft: 20,
-                fontSize: 14,
+                fontSize: 12,
               }}
             ></Text>
           </View>
         </View>
 
         {/* COLUMNA DERECHA */}
-        <View style={{ width: "50%", marginLeft: 40 }}>
+        <View style={{ width: "55%", marginLeft: 15 }}>
           <View style={styles.horizontal}>
             <Text style={styles.fontSize}>MUNICIPIO:</Text>
             <Text
@@ -789,7 +792,7 @@ const EstudiantePDF = ({ estudiante }) => (
               style={{
                 borderBottom: 1,
                 width: "100%",
-                marginLeft: 105,
+                marginLeft: 80,
                 fontSize: 12,
               }}
             ></Text>
@@ -816,7 +819,7 @@ const EstudiantePDF = ({ estudiante }) => (
               style={{
                 borderBottom: 1,
                 width: "100%",
-                marginLeft: 80,
+                marginLeft: 70,
                 fontSize: 12,
               }}
             ></Text>
@@ -869,7 +872,7 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: 350,
                 marginLeft: 10,
-                fontSize: 14,
+                fontSize: 12,
               }}
             ></Text>
           </View>
@@ -885,7 +888,7 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: "60%",
                 marginLeft: 60,
-                fontSize: 14,
+                fontSize: 12,
                 marginTop: 25
               }}
             ></Text>
@@ -901,7 +904,7 @@ const EstudiantePDF = ({ estudiante }) => (
                 borderBottom: 1,
                 width: "50%",
                 marginLeft: 65,
-                fontSize: 14,
+                fontSize: 12,
                 marginTop: 25
               }}
             ></Text>

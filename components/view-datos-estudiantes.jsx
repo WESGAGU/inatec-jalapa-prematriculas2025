@@ -202,7 +202,7 @@ const ViewDatosEstudiantes = () => {
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.docente}</td>
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.fecha_registro}</td>
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                <Image src={estudiante.documento} alt="Documento" width={300} height={200} />
+                <Image src={estudiante.documento} alt="Documento" width={150} height={50} />
               </td>
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
                 <button onClick={() => handleViewPDF(estudiante)} className="bg-blue-500 text-white px-4 py-2 rounded">
