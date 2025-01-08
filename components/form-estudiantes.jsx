@@ -420,7 +420,7 @@ const FormEstudiantes = () => {
         <input
           type="text"
           name="emergencia_nombres"
-          placeholder='Nombre de su familiar.'
+          placeholder="Nombre de su familiar."
           value={formData.emergencia_nombres}
           onChange={handleChange}
           className="w-full p-2 border rounded border-blue-300"
@@ -436,7 +436,7 @@ const FormEstudiantes = () => {
         <input
           type="text"
           name="emergencia_parentezco"
-          placeholder='Ex: Madre, Padre, Abuela, etc..'
+          placeholder="Ex: Madre, Padre, Abuela, etc.."
           value={formData.emergencia_parentezco}
           onChange={handleChange}
           className="w-full p-2 border rounded border-blue-300"
@@ -452,7 +452,7 @@ const FormEstudiantes = () => {
         <input
           type="text"
           name="emergencia_telefono"
-          placeholder='telf. de su familiar.'
+          placeholder="telf. de su familiar."
           value={formData.emergencia_telefono}
           onChange={handleChange}
           className="w-full p-2 border rounded border-blue-300"
@@ -505,19 +505,20 @@ const FormEstudiantes = () => {
       {/* Campo de imagen del documento 1 */}
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">
-          DOCUMENTO 1 IMAGEN DEL DIPLOMA DE BACHILLER O NOTAS DE SECUNDARIA:
+          DOCUMENTO 1 IMAGEN DE CÉDULA DE IDENTIDAD O PARTIDA DE NACIMIENTO:
         </label>
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger className="text-md hover:text-blue-400">Leer importante...</AccordionTrigger>
             <AccordionContent>
+             
+
               <span className="block text-blue-700 mb-3 text-md md:text-lg">
-                Aquí deberá subir una imagen de su Diploma de bachiller, en caso
-                de estar en secundaria tendra que subir una imagen de sus notas del año que esta cursando actualmente, "tambien puede tomarle fotos a su boletin de notas".
+                Aquí deberá subir una imagen de su Cédula de identidad, en caso de ser menor de edad o por algún motivo no tiene cédula actualmente, tendra que subir una imagen de su partida de nacimiento que verifique la escritura de sus Nombres y Apellios.
               </span>
 
               <Image
-                src="/diplomaNotas.webp"
+                src="partidaCedula.webp"
                 width={200}
                 height={100}
                 alt="indicativo"
@@ -551,18 +552,20 @@ const FormEstudiantes = () => {
       {/* Campo de imagen del documento 2 */}
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">
-          DOCUMENTO 2 IMAGEN DE CÉDULA DE IDENTIDAD O PARTIDA DE NACIMIENTO:
+        DOCUMENTO 2 IMAGEN DEL DIPLOMA DE BACHILLER O NOTAS DE SECUNDARIA:
         </label>
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger className="text-md hover:text-blue-400">Leer importante...</AccordionTrigger>
             <AccordionContent>
-              <span className="block text-blue-700 mb-3 text-md md:text-lg">
-                Aquí deberá subir una imagen de su Cédula de identidad, en caso de ser menor de edad o por algún motivo no tiene cédula actualmente, tendra que subir una imagen de su partida de nacimiento que verifique la escritura de sus Nombres y Apellios.
+            <span className="block text-blue-700 mb-3 text-md md:text-lg">
+                Aquí deberá subir una imagen de su Diploma de bachiller, en caso
+                de estar en secundaria tendra que subir una imagen de sus notas del año que esta cursando actualmente, "tambien puede tomarle fotos a su boletin de notas".
               </span>
+              
 
               <Image
-                src="/partidaCedula.webp"
+                src="/diplomaNotas.webp"
                 width={200}
                 height={100}
                 alt="indicativo"
