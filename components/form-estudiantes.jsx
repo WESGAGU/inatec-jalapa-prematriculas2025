@@ -517,7 +517,7 @@ const FormEstudiantes = () => {
               </span>
 
               <Image
-                src="/indicativo2.png"
+                src="/diplomaNotas.webp"
                 width={200}
                 height={100}
                 alt="indicativo"
@@ -562,7 +562,7 @@ const FormEstudiantes = () => {
               </span>
 
               <Image
-                src="/indicativo2.png"
+                src="/partidaCedula.webp"
                 width={200}
                 height={100}
                 alt="indicativo"
