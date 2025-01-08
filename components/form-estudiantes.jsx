@@ -420,7 +420,7 @@ const FormEstudiantes = () => {
         <input
           type="text"
           name="emergencia_nombres"
-          placeholder='Nombre de su familiar.'
+          placeholder="Nombre de su familiar."
           value={formData.emergencia_nombres}
           onChange={handleChange}
           className="w-full p-2 border rounded border-blue-300"
@@ -436,7 +436,7 @@ const FormEstudiantes = () => {
         <input
           type="text"
           name="emergencia_parentezco"
-          placeholder='Ex: Madre, Padre, Abuela, etc..'
+          placeholder="Ex: Madre, Padre, Abuela, etc.."
           value={formData.emergencia_parentezco}
           onChange={handleChange}
           className="w-full p-2 border rounded border-blue-300"
@@ -452,7 +452,7 @@ const FormEstudiantes = () => {
         <input
           type="text"
           name="emergencia_telefono"
-          placeholder='telf. de su familiar.'
+          placeholder="telf. de su familiar."
           value={formData.emergencia_telefono}
           onChange={handleChange}
           className="w-full p-2 border rounded border-blue-300"
