@@ -511,8 +511,6 @@ const FormEstudiantes = () => {
           <AccordionItem value="item-1">
             <AccordionTrigger className="text-md hover:text-blue-400">Leer importante...</AccordionTrigger>
             <AccordionContent>
-             
-
               <span className="block text-blue-700 mb-3 text-md md:text-lg">
                 Aquí deberá subir una imagen de su Cédula de identidad, en caso de ser menor de edad o por algún motivo no tiene cédula actualmente, tendra que subir una imagen de su partida de nacimiento que verifique la escritura de sus Nombres y Apellios.
               </span>
