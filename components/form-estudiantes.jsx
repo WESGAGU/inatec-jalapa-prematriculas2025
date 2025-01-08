@@ -543,7 +543,7 @@ const FormEstudiantes = () => {
           <img
             src={preview1}
             alt="Vista previa 1"
-            className="mt-2 w-60 h-auto rounded"
+            className="mt-2 w-40 lg:w-60 h-auto rounded"
           />
         )}
       </div>
@@ -588,7 +588,7 @@ const FormEstudiantes = () => {
           <img
             src={preview2}
             alt="Vista previa 2"
-            className="mt-2 w-96 h-auto rounded"
+            className="mt-2 w-40 lg:w-60 h-auto rounded"
           />
         )}
       </div>
