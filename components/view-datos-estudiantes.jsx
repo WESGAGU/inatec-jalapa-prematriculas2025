@@ -89,9 +89,42 @@ const ViewDatosEstudiantes = () => {
     setShowPDF(true);
   };
 
+  // Función para manejar la edición
+  const handleEdit = (id) => {
+    router.push(`/editar-estudiante/${id}`);
+  };
+
+  // funcion para eliminar los registros
+  const handleDelete = async (id, documento1, documento2) => {
+    const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este registro?");
+    if (!confirmDelete) return;
+  
+    try {
+      const response = await fetch("/api/deleteEstudiante", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ id, documento1, documento2 }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Error al eliminar el estudiante");
+      }
+  
+      // Actualizar la lista de estudiantes
+      setEstudiantes((prev) => prev.filter((estudiante) => estudiante.id !== id));
+      setFilteredEstudiantes((prev) => prev.filter((estudiante) => estudiante.id !== id));
+    } catch (error) {
+      console.error("Error al eliminar el estudiante:", error);
+      alert("Error al eliminar el estudiante");
+    }
+  };
+
   return (
     <div>
-      <Analytics/>
+      <Analytics />
       <h1 className="text-2xl font-bold mb-4 ml-4">Datos de Estudiantes</h1>
       <div className="mb-4 flex space-x-4">
         <input
@@ -174,45 +207,133 @@ const ViewDatosEstudiantes = () => {
               Fecha de Registro
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
-              Documento
+              Cedula o partida de nacimiento
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+              Diploma o notas
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
               Imprimir
             </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+              Editar Registro
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+              Eliminar Registro
+            </th>
+            
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {filteredEstudiantes.map((estudiante) => (
             <tr key={estudiante.id}>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.nombres}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.apellidos}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.fecha_nacimiento}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.edad}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.sexo}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.departamento}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.municipio}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.direccion}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.personas_hogar}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.telefono}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.nivel_academico}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.tecnico}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.emergencia_nombres}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.emergencia_parentezco}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.emergencia_telefono}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.docente}</td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">{estudiante.fecha_registro}</td>
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                <Image src={estudiante.documento} alt="Documento" width={150} height={50} />
+                {estudiante.nombres}
               </td>
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                <button onClick={() => handleViewPDF(estudiante)} className="bg-blue-500 text-white px-4 py-2 rounded">
+                {estudiante.apellidos}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.fecha_nacimiento}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.edad}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.sexo}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.departamento}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.municipio}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.direccion}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.personas_hogar}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.telefono}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.nivel_academico}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.tecnico}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.emergencia_nombres}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.emergencia_parentezco}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.emergencia_telefono}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.docente}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.fecha_registro}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                <Image
+                  src={estudiante.documento}
+                  alt="Documento"
+                  width={150}
+                  height={50}
+                />
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                <Image
+                  src={estudiante.documento2}
+                  alt="Documento"
+                  width={150}
+                  height={50}
+                />
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                <button
+                  onClick={() => handleViewPDF(estudiante)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded"
+                >
                   Ver Documento
                 </button>
-                <PDFDownloadLink document={<EstudiantePDF estudiante={estudiante} />} fileName={`${estudiante.nombres}_${estudiante.apellidos}.pdf`} className='bg-green-700 p-2 rounded ml-2'>
+                <PDFDownloadLink
+                  document={<EstudiantePDF estudiante={estudiante} />}
+                  fileName={`${estudiante.nombres}_${estudiante.apellidos}.pdf`}
+                  className="bg-green-700 p-2 rounded ml-2"
+                >
                   {({ blob, url, loading, error }) =>
-                    loading ? 'Cargando documento...' : 'Descargar PDF'
+                    loading ? "Cargando documento..." : "Descargar PDF"
                   }
                 </PDFDownloadLink>
+              </td>
+
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                <button
+                  onClick={() => handleEdit(estudiante.id)}
+                  className="bg-yellow-500 text-white px-4 py-2 rounded"
+                >
+                  Editar
+                </button>
+              </td>
+
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                <button
+                  onClick={() =>
+                    handleDelete(
+                      estudiante.id,
+                      estudiante.documento,
+                      estudiante.documento2
+                    )
+                  }
+                  className="bg-red-500 text-white px-4 py-2 rounded"
+                >
+                  Eliminar
+                </button>
               </td>
             </tr>
           ))}
@@ -222,10 +343,13 @@ const ViewDatosEstudiantes = () => {
       {showPDF && selectedEstudiante && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-4 rounded-lg max-w-3xl w-full">
-            <PDFViewer style={{ width: '100%', height: '80vh' }}>
+            <PDFViewer style={{ width: "100%", height: "80vh" }}>
               <EstudiantePDF estudiante={selectedEstudiante} />
             </PDFViewer>
-            <button onClick={() => setShowPDF(false)} className="mt-4 bg-red-500 text-white px-4 py-2 rounded">
+            <button
+              onClick={() => setShowPDF(false)}
+              className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
+            >
               Cerrar
             </button>
           </div>

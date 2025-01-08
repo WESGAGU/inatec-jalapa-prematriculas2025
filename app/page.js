@@ -8,6 +8,9 @@ import { User } from "lucide-react";
 import Link from "next/link";
 import { Analytics } from "@vercel/analytics/react";
 
+
+
+
 export default function Home() {
   const [showForm, setShowForm] = useState(false); // Estado para mostrar u ocultar el formulario
 
@@ -26,7 +29,7 @@ export default function Home() {
         >
           {showForm
             ? "Ocultar Formulario"
-            : "Mostrar Formulario de prematricula"}
+            : "Mostrar Formulario de Matricula"}
         </button>
       </div>
       {/* Condición para mostrar el formulario */}

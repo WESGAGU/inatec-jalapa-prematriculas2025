@@ -7,7 +7,7 @@ const HeaderCard = () => {
         <Card className="block w-96 md:w-4/5 lg:w-3/6 mx-auto shadow-lg">
           <CardHeader>
             <CardTitle className="text-center text-2xl mb-2">
-              Prematrícula en Línea
+              Matricula en Línea
             </CardTitle>
             <p className="text-left md:text-center">
               ¡Prepárate para el futuro! El 2025 te espera con nuevas

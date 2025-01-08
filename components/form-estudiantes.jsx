@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import Image from 'next/image';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const FormEstudiantes = () => {
   const [formData, setFormData] = useState({
@@ -24,8 +30,11 @@ const FormEstudiantes = () => {
     fecha_registro: '',
   });
 
-  const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [file1, setFile1] = useState(null); // Estado para la primera imagen
+  const [preview1, setPreview1] = useState(null); // Vista previa de la primera imagen
+  const [file2, setFile2] = useState(null); // Estado para la segunda imagen
+  const [preview2, setPreview2] = useState(null); // Vista previa de la segunda imagen
+  const [isSubmitting, setIsSubmitting] = useState(false); // Estado para el indicador de carga
 
   // Manejar los cambios en los campos del formulario
   const handleChange = (e) => {
@@ -47,23 +56,47 @@ const FormEstudiantes = () => {
         Swal.fire({
           icon: 'info',
           title: 'Información',
-          text: 'No cumples con los requisitos para optar al TE en Gestón de fincas Ganadera. Debes tener al menos 16 años y estar en Undecimo grado.',
+          text: 'No cumples con los requisitos para optar al TE en Gestión de Fincas Ganaderas. Debes tener al menos 16 años y estar en Undecimo grado.',
         });
         setFormData({ ...formData, tecnico: '' }); // Deshabilitar la opción
       }
     }
   };
 
-  // Manejar la selección de la imagen
-  const handleFileChange = (e) => {
+  // Manejar la selección de la primera imagen
+  const handleFileChange1 = (e) => {
     const uploadedFile = e.target.files[0];
-    setFile(uploadedFile);
-    setPreview(URL.createObjectURL(uploadedFile)); // Generar URL de previsualización
+    if (uploadedFile && uploadedFile.type.startsWith('image/')) {
+      setFile1(uploadedFile);
+      setPreview1(URL.createObjectURL(uploadedFile)); // Generar URL de previsualización
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Por favor, sube un archivo de imagen válido (jpg, png, etc.).',
+      });
+    }
+  };
+
+  // Manejar la selección de la segunda imagen
+  const handleFileChange2 = (e) => {
+    const uploadedFile = e.target.files[0];
+    if (uploadedFile && uploadedFile.type.startsWith('image/')) {
+      setFile2(uploadedFile);
+      setPreview2(URL.createObjectURL(uploadedFile)); // Generar URL de previsualización
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Por favor, sube un archivo de imagen válido (jpg, png, etc.).',
+      });
+    }
   };
 
   // Enviar datos al backend
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true); // Activar el indicador de carga
 
     // Validación de longitud para los campos de teléfono
     const phoneFields = ['telefono', 'emergencia_telefono'];
@@ -75,6 +108,7 @@ const FormEstudiantes = () => {
           title: 'Error',
           text: 'El número de teléfono no puede tener más de 12 dígitos.',
         });
+        setIsSubmitting(false); // Desactivar el indicador de carga
         return; // No enviar el formulario si excede el límite
       }
       if (value.length < 8 && value.length > 0) {
@@ -83,6 +117,7 @@ const FormEstudiantes = () => {
           title: 'Error',
           text: 'El número de teléfono debe tener al menos 8 dígitos.',
         });
+        setIsSubmitting(false); // Desactivar el indicador de carga
         return; // No enviar el formulario si no cumple el mínimo
       }
     }
@@ -91,8 +126,11 @@ const FormEstudiantes = () => {
     Object.entries(formData).forEach(([key, value]) => {
       data.append(key, value);
     });
-    if (file) {
-      data.append('image', file);
+    if (file1) {
+      data.append('image1', file1); // Agregar la primera imagen
+    }
+    if (file2) {
+      data.append('image2', file2); // Agregar la segunda imagen
     }
 
     try {
@@ -106,7 +144,7 @@ const FormEstudiantes = () => {
         Swal.fire({
           icon: 'success',
           title: 'Éxito',
-          text: 'Prematricula registrada exitosamente, se le contactara a finales de enero para seguir con el proceso de matricula',
+          text: 'Matricula registrada exitosamente, se le contactará a inicios de Febrero para seguir con el proceso.',
         });
         // Limpiar el formulario después de enviar los datos
         setFormData({
@@ -129,8 +167,10 @@ const FormEstudiantes = () => {
           docente: '',
           fecha_registro: '',
         });
-        setFile(null);
-        setPreview(null);
+        setFile1(null);
+        setFile2(null);
+        setPreview1(null);
+        setPreview2(null);
       } else {
         alert('Error: ' + result.message);
       }
@@ -141,12 +181,17 @@ const FormEstudiantes = () => {
         title: 'Error',
         text: 'Error al enviar los datos',
       });
+    } finally {
+      setIsSubmitting(false); // Desactivar el indicador de carga
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-96 md:w-4/5 lg:w-3/6 mx-auto p-4 border rounded shadow-xl mb-5">
-      <h2 className='block text-center font-bold mb-5'>DATOS PERSONALES</h2>
+    <form
+      onSubmit={handleSubmit}
+      className="w-96 md:w-4/5 lg:w-3/6 mx-auto p-4 border rounded shadow-xl mb-5"
+    >
+      <h2 className="block text-center font-bold mb-5">DATOS PERSONALES</h2>
       {/* Campo de nombres */}
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">NOMBRES:</label>
@@ -229,7 +274,6 @@ const FormEstudiantes = () => {
           <option value="null">Seleccione...</option>
           <option value="Nueva Segovia">Nueva Segovia</option>
           <option value="Otro">Otro</option>
-          {/* Agregar más departamentos según sea necesario */}
         </select>
       </div>
 
@@ -288,14 +332,16 @@ const FormEstudiantes = () => {
 
       {/* Campo de personas en el hogar */}
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">PERSONAS EN EL HOGAR:</label>
+        <label className="block text-gray-700 mb-2">
+          PERSONAS EN EL HOGAR:
+        </label>
         <input
           type="number"
           min="1"
           name="personas_hogar"
           value={formData.personas_hogar}
           onChange={handleChange}
-          placeholder='Numero de personas que viven en su hogar'
+          placeholder="Número de personas que viven en su hogar"
           className="w-full p-2 border rounded border-blue-300"
           required
         />
@@ -314,9 +360,9 @@ const FormEstudiantes = () => {
         />
       </div>
 
-      {/* Campo de Nivel Academico */}
+      {/* Campo de Nivel Académico */}
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">NIVEL ACADEMICO:</label>
+        <label className="block text-gray-700 mb-2">NIVEL ACADÉMICO:</label>
         <select
           name="nivel_academico"
           value={formData.nivel_academico}
@@ -330,9 +376,11 @@ const FormEstudiantes = () => {
           <option value="Undecimo">Undecimo</option>
         </select>
       </div>
-      <h2 className='block text-center font-bold mb-5'>CARRERA TÉCNICA QUE DESEA ESTUDIAR</h2>
 
       {/* Campo de técnico */}
+      <h2 className="block text-center font-bold mb-5">
+        CARRERA TÉCNICA QUE DESEA ESTUDIAR
+      </h2>
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">TÉCNICO:</label>
         <select
@@ -343,29 +391,36 @@ const FormEstudiantes = () => {
           required
         >
           <option value="">Seleccione...</option>
-          <optgroup label='Turno Diurno'>
-            <option value="TG en Computación ">TG en Computación</option>
+          <optgroup label="Turno Diurno">
+            <option value="TG en Computación">TG en Computación</option>
             <option value="TG en Contabilidad">TG en Contabilidad</option>
-            <option value="TG en Administracón">TG en Administracón</option>
+            <option value="TG en Administración">TG en Administración</option>
             <option value="TG en Veterinaria">TG en Veterinaria</option>
             <option value="TG en Agropecuaria">TG en Agropecuaria</option>
           </optgroup>
-          <optgroup label='Turno Sabatino'>
+          <optgroup label="Turno Sabatino">
             <option value="TG en Zootecnia">TG en Zootecnia</option>
-            <option value="TG en Agronomia">TG en Agronomia</option>
-            <option value="TG en Riego Agricola">TG en Riego Agricola</option>
-            <option value="TE en Gestión de Fincas Ganaderas">TE en Gestión de Fincas Ganaderas</option>
+            <option value="TG en Agronomía">TG en Agronomía</option>
+            <option value="TG en Riego Agrícola">TG en Riego Agrícola</option>
+            <option value="TE en Gestión de Fincas Ganaderas">
+              TE en Gestión de Fincas Ganaderas
+            </option>
           </optgroup>
         </select>
       </div>
-      <h2 className='block text-center font-bold mb-5 mt-5'>EN CASO DE EMERGENCIA LLAMAR A</h2>
 
       {/* Campo de emergencia nombre */}
+      <h2 className="block text-center font-bold mb-5 mt-5">
+        EN CASO DE EMERGENCIA LLAMAR A
+      </h2>
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">NOMBRES Y APELLIDOS DE EMERGENCIA:</label>
+        <label className="block text-gray-700 mb-2">
+          NOMBRES Y APELLIDOS DE EMERGENCIA:
+        </label>
         <input
           type="text"
           name="emergencia_nombres"
+          placeholder='Nombre de su familiar.'
           value={formData.emergencia_nombres}
           onChange={handleChange}
           className="w-full p-2 border rounded border-blue-300"
@@ -375,10 +430,13 @@ const FormEstudiantes = () => {
 
       {/* Campo de emergencia parentesco */}
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">PARENTESCO DE EMERGENCIA:</label>
+        <label className="block text-gray-700 mb-2">
+          PARENTESCO DE EMERGENCIA:
+        </label>
         <input
           type="text"
           name="emergencia_parentezco"
+          placeholder='Ex: Madre, Padre, Abuela, etc..'
           value={formData.emergencia_parentezco}
           onChange={handleChange}
           className="w-full p-2 border rounded border-blue-300"
@@ -388,10 +446,13 @@ const FormEstudiantes = () => {
 
       {/* Campo de emergencia teléfono */}
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">TELÉFONO DE EMERGENCIA:</label>
+        <label className="block text-gray-700 mb-2">
+          TELÉFONO DE EMERGENCIA:
+        </label>
         <input
           type="text"
           name="emergencia_telefono"
+          placeholder='telf. de su familiar.'
           value={formData.emergencia_telefono}
           onChange={handleChange}
           className="w-full p-2 border rounded border-blue-300"
@@ -399,13 +460,13 @@ const FormEstudiantes = () => {
         />
       </div>
 
-      <h2 className='block text-center font-bold mb-5 mt-5'>OTROS DATOS</h2>
-
       {/* Campo de docente */}
+      <h2 className="block text-center font-bold mb-5 mt-5">OTROS DATOS</h2>
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">DOCENTE:</label>
-        <span className='block text-gray-500 mb-3 text-md md:text-lg'>En caso de que algun Docente le recomendo la prematricula en linea seleccionarlo
-          si no omitir
+        <span className="block text-gray-500 mb-3 text-md md:text-lg">
+          En caso de que algún Docente le recomendó la prematrícula en línea
+          selecciónelo, si no omita.
         </span>
         <select
           name="docente"
@@ -425,7 +486,6 @@ const FormEstudiantes = () => {
           <option value="Wesling García">Wesling García</option>
           <option value="Boanerge Saenz">Boanerge Saenz</option>
           <option value="Otro">Otro</option>
-          {/* Agregar más docentes según sea necesario */}
         </select>
       </div>
 
@@ -442,36 +502,116 @@ const FormEstudiantes = () => {
         />
       </div>
 
-      {/* Campo de imagen del documento */}
+      {/* Campo de imagen del documento 1 */}
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">IMAGEN DEL DOCUMENTO:</label>
-        <span className='block text-gray-500 mb-3 text-md md:text-lg'>Aqui debera subir una imagen de su cedula, en caso de no tener diploma de bachicherato o primaria que verifique sus Nombres y Apellidos</span>
-        <Image
-          src="/indicativo2.png"
-          width={200}
-          height={100}
-          alt="indicativo"
-          className="w-full"
-        />
-        <input
-          type="file"
-          onChange={handleFileChange}
-          className="w-full p-2 border rounded border-blue-300"
-          required
-        />
-        {preview && (
-          <img src={preview} alt="Vista previa" className="mt-2 w-96 h-auto rounded" />
+        <label className="block text-gray-700 mb-2">
+          DOCUMENTO 1 IMAGEN DEL DIPLOMA DE BACHILLER O NOTAS DE SECUNDARIA:
+        </label>
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="text-md hover:text-blue-400">Leer importante...</AccordionTrigger>
+            <AccordionContent>
+              <span className="block text-blue-700 mb-3 text-md md:text-lg">
+                Aquí deberá subir una imagen de su Diploma de bachiller, en caso
+                de estar en secundaria tendra que subir una imagen de sus notas del año que esta cursando actualmente.
+              </span>
+
+              <Image
+                src="/indicativo2.png"
+                width={200}
+                height={100}
+                alt="indicativo"
+                className="w-full"
+              />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
+        <div className="relative border border-blue-300 rounded p-2 mt-2">
+          <input
+            type="file"
+            onChange={handleFileChange1}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            accept="image/*"
+            required
+          />
+          <div className="text-center p-2 bg-blue-100 text-blue-700 rounded">
+            {file1 ? file1.name : "Seleccionar archivo"}
+          </div>
+        </div>
+        {preview1 && (
+          <img
+            src={preview1}
+            alt="Vista previa 1"
+            className="mt-2 w-60 h-auto rounded"
+          />
         )}
       </div>
 
-      {/* Botón de enviar */}
+      {/* Campo de imagen del documento 2 */}
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-2">
+          DOCUMENTO 2 IMAGEN DE CÉDULA DE IDENTIDAD O PARTIDA DE NACIMIENTO:
+        </label>
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="text-md hover:text-blue-400">Leer importante...</AccordionTrigger>
+            <AccordionContent>
+              <span className="block text-blue-700 mb-3 text-md md:text-lg">
+                Aquí deberá subir una imagen de su Cédula de identidad, en caso de ser menor de edad o por algún motivo no tiene cédula actualmente, tendra que subir una imagen de su partida de nacimiento que verifique la escritura de sus Nombres y Apellios.
+              </span>
+
+              <Image
+                src="/indicativo2.png"
+                width={200}
+                height={100}
+                alt="indicativo"
+                className="w-full"
+              />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        
+        <div className="relative border border-blue-300 rounded p-2 mt-2">
+          <input
+            type="file"
+            onChange={handleFileChange2}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            accept="image/*"
+            required
+          />
+          <div className="text-center p-2 bg-blue-100 text-blue-700 rounded">
+            {file2 ? file2.name : "Seleccionar archivo"}
+          </div>
+        </div>
+        {preview2 && (
+          <img
+            src={preview2}
+            alt="Vista previa 2"
+            className="mt-2 w-96 h-auto rounded"
+          />
+        )}
+      </div>
+
+      {/* Botón de enviar con indicador de carga */}
       <button
         type="submit"
-        className="p-3 bg-blue-500 text-white rounded w-full"
+        className="p-3 bg-blue-500 text-white rounded w-full flex justify-center items-center"
+        disabled={isSubmitting} // Deshabilitar el botón mientras se envía
       >
-        Enviar
+        {isSubmitting ? (
+          <div className="flex items-center">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+            Enviando...
+          </div>
+        ) : (
+          "Enviar"
+        )}
       </button>
-      <span className='block mt-5 text-gray-500 text-center'>¡Al precionar el boton Enviar, esperar a que se muestre la alerta de envio!</span>
+      <span className="block mt-5 text-gray-500 text-center">
+        ¡Al presionar el botón Enviar, espere a que se muestre la alerta de
+        envío!
+      </span>
     </form>
   );
 };

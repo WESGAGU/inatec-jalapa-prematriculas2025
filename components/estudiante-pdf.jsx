@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
   documentoImage: {
     maxWidth: "100%",
     maxHeight: "100%",
+    marginTop: 30,
   },
   header: {
     fontSize: 18,
@@ -363,7 +364,7 @@ const EstudiantePDF = ({ estudiante }) => (
                 fontSize: 12,
               }}
             >
-              Solter@
+              
             </Text>
           </View>
 
@@ -922,6 +923,13 @@ const EstudiantePDF = ({ estudiante }) => (
 
       <View style={styles.documentoContainer}>
         <Image src={estudiante.documento} style={styles.documentoImage} />
+      </View>
+    </Page>
+
+    {/* TERCERA PAGINA DEL PDF, DONDE ESTA LA IMAGEN DEL DOCUMENTO DIPLOMA O NOTAS */}
+    <Page size="A4" style={styles.page}>
+      <View style={styles.documentoContainer}>
+        <Image src={estudiante.documento2} style={styles.documentoImage} />
       </View>
     </Page>
   </Document>
