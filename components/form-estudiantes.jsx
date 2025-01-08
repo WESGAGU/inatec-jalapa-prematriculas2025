@@ -558,7 +558,7 @@ const FormEstudiantes = () => {
             <AccordionContent>
             <span className="block text-blue-700 mb-3 text-md md:text-lg">
                 Aquí deberá subir una imagen de su Diploma de bachiller, en caso
-                de estar en secundaria tendra que subir una imagen de sus notas del año que esta cursando actualmente, "tambien puede tomarle fotos a su boletin de notas".
+                de estar en secundaria tendra que subir una imagen de sus notas del año que esta cursando actualmente,  &quot;tambien puede tomarle fotos a su boletin de notas&quot;.
               </span>
               
 
