@@ -140,6 +140,17 @@ const FormEstudiantes = () => {
       }
     }
 
+    // Verificar que el estado civil sea válido
+    if (formData.sexo && !opcionesEstadoCivil[formData.sexo].includes(formData.estadocivil)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Por favor, seleccione un estado civil válido.',
+      });
+      setIsSubmitting(false); // Desactivar el indicador de carga
+      return; // No enviar el formulario si el estado civil no es válido
+    }
+
     const data = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       data.append(key, value);

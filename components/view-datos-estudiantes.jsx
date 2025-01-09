@@ -171,6 +171,15 @@ const ViewDatosEstudiantes = () => {
               Sexo
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+              Estado Civil
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+              Cedula
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+              Municipio de Nacimiento
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
               Departamento
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
@@ -241,6 +250,15 @@ const ViewDatosEstudiantes = () => {
               </td>
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
                 {estudiante.sexo}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.estadocivil}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.cedula}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                {estudiante.municipionacimiento}
               </td>
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
                 {estudiante.departamento}
