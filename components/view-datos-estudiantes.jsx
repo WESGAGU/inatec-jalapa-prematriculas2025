@@ -18,6 +18,7 @@ const ViewDatosEstudiantes = () => {
     docente: '',
     tecnico: ''
   });
+  const [showAllColumns, setShowAllColumns] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -39,7 +40,7 @@ const ViewDatosEstudiantes = () => {
         }
         const data = await response.json();
         setEstudiantes(data);
-        setFilteredEstudiantes(data);
+        setFilteredEstudiantes(data); // Inicialmente, mostrar todos los estudiantes
       } catch (error) {
         setError(error.message);
       } finally {
@@ -51,21 +52,32 @@ const ViewDatosEstudiantes = () => {
   }, [router]);
 
   useEffect(() => {
-    let filtered = estudiantes;
+    // Función para aplicar los filtros
+    const applyFilters = () => {
+      let filtered = estudiantes;
 
-    if (filters.fechaRegistro) {
-      filtered = filtered.filter(estudiante => estudiante.fecha_registro === filters.fechaRegistro);
-    }
+      if (filters.fechaRegistro) {
+        filtered = filtered.filter(estudiante =>
+          estudiante.fecha_registro.includes(filters.fechaRegistro)
+        );
+      }
 
-    if (filters.docente) {
-      filtered = filtered.filter(estudiante => estudiante.docente.toLowerCase().includes(filters.docente.toLowerCase()));
-    }
+      if (filters.docente) {
+        filtered = filtered.filter(estudiante =>
+          estudiante.docente.toLowerCase().includes(filters.docente.toLowerCase())
+        );
+      }
 
-    if (filters.tecnico) {
-      filtered = filtered.filter(estudiante => estudiante.tecnico.toLowerCase().includes(filters.tecnico.toLowerCase()));
-    }
+      if (filters.tecnico) {
+        filtered = filtered.filter(estudiante =>
+          estudiante.tecnico.toLowerCase().includes(filters.tecnico.toLowerCase())
+        );
+      }
 
-    setFilteredEstudiantes(filtered);
+      setFilteredEstudiantes(filtered);
+    };
+
+    applyFilters(); // Aplicar los filtros cada vez que cambien
   }, [filters, estudiantes]);
 
   if (loading) {
@@ -89,16 +101,14 @@ const ViewDatosEstudiantes = () => {
     setShowPDF(true);
   };
 
-  // Función para manejar la edición
   const handleEdit = (id) => {
     router.push(`/editar-estudiante/${id}`);
   };
 
-  // funcion para eliminar los registros
   const handleDelete = async (id, documento1, documento2) => {
     const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este registro?");
     if (!confirmDelete) return;
-  
+
     try {
       const response = await fetch("/api/deleteEstudiante", {
         method: "DELETE",
@@ -108,12 +118,11 @@ const ViewDatosEstudiantes = () => {
         },
         body: JSON.stringify({ id, documento1, documento2 }),
       });
-  
+
       if (!response.ok) {
         throw new Error("Error al eliminar el estudiante");
       }
-  
-      // Actualizar la lista de estudiantes
+
       setEstudiantes((prev) => prev.filter((estudiante) => estudiante.id !== id));
       setFilteredEstudiantes((prev) => prev.filter((estudiante) => estudiante.id !== id));
     } catch (error) {
@@ -151,6 +160,12 @@ const ViewDatosEstudiantes = () => {
           placeholder="Filtrar por técnico"
           className="border p-2 rounded"
         />
+        <button
+          onClick={() => setShowAllColumns(!showAllColumns)}
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          {showAllColumns ? "Ocultar columnas" : "Mostrar todas las columnas"}
+        </button>
       </div>
       <table className="min-w-full divide-y divide-gray-200 border border-blue-300">
         <thead className="bg-gray-50 border border-blue-300">
@@ -162,59 +177,63 @@ const ViewDatosEstudiantes = () => {
               Apellidos
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
-              Fecha de Nacimiento
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
               Edad
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
               Sexo
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
-              Estado Civil
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
-              Cedula
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
-              Municipio de Nacimiento
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
-              Departamento
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
               Municipio
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
-              Dirección
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
-              Personas en el Hogar
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
               Teléfono
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
-              Nivel Academico
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
               Técnico
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
-              Nombres de Emergencia
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
-              Parentesco de Emergencia
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
-              Teléfono de Emergencia
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
-              Docente
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
-              Fecha de Registro
-            </th>
+            {showAllColumns && (
+              <>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+                  Fecha de Nacimiento
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+                  Estado Civil
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+                  Cedula
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+                  Municipio de Nacimiento
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+                  Departamento
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+                  Dirección
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+                  Personas en el Hogar
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+                  Nivel Academico
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+                  Nombres de Emergencia
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+                  Parentesco de Emergencia
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+                  Teléfono de Emergencia
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+                  Docente
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
+                  Fecha de Registro
+                </th>
+              </>
+            )}
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
               Cedula o partida de nacimiento
             </th>
@@ -230,7 +249,6 @@ const ViewDatosEstudiantes = () => {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-blue-300">
               Eliminar Registro
             </th>
-            
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -243,59 +261,63 @@ const ViewDatosEstudiantes = () => {
                 {estudiante.apellidos}
               </td>
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                {estudiante.fecha_nacimiento}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
                 {estudiante.edad}
               </td>
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
                 {estudiante.sexo}
               </td>
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                {estudiante.estadocivil}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                {estudiante.cedula}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                {estudiante.municipionacimiento}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                {estudiante.departamento}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
                 {estudiante.municipio}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                {estudiante.direccion}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                {estudiante.personas_hogar}
               </td>
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
                 {estudiante.telefono}
               </td>
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                {estudiante.nivel_academico}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
                 {estudiante.tecnico}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                {estudiante.emergencia_nombres}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                {estudiante.emergencia_parentezco}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                {estudiante.emergencia_telefono}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                {estudiante.docente}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
-                {estudiante.fecha_registro}
-              </td>
+              {showAllColumns && (
+                <>
+                  <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                    {estudiante.fecha_nacimiento}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                    {estudiante.estadocivil}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                    {estudiante.cedula}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                    {estudiante.municipionacimiento}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                    {estudiante.departamento}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                    {estudiante.direccion}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                    {estudiante.personas_hogar}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                    {estudiante.nivel_academico}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                    {estudiante.emergencia_nombres}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                    {estudiante.emergencia_parentezco}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                    {estudiante.emergencia_telefono}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                    {estudiante.docente}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
+                    {estudiante.fecha_registro}
+                  </td>
+                </>
+              )}
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
                 <Image
                   src={estudiante.documento}
@@ -329,7 +351,6 @@ const ViewDatosEstudiantes = () => {
                   }
                 </PDFDownloadLink>
               </td>
-
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
                 <button
                   onClick={() => handleEdit(estudiante.id)}
@@ -338,7 +359,6 @@ const ViewDatosEstudiantes = () => {
                   Editar
                 </button>
               </td>
-
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
                 <button
                   onClick={() =>
