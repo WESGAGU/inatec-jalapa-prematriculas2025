@@ -170,9 +170,6 @@ const EstudiantePDF = ({ estudiante }) => {
               <Text style={styles.fontSize}>CONTRASEÑA TEMPORAL:</Text>
               </View>
 
-              
-
-
             </View>
 
           </View>
@@ -281,7 +278,7 @@ const EstudiantePDF = ({ estudiante }) => {
                   marginLeft: 90,
                   fontSize: 12,
                 }}
-              ></Text>
+              >{estudiante.municipionacimiento}</Text>
             </View>
 
             <View style={styles.horizontal}>
@@ -478,7 +475,7 @@ const EstudiantePDF = ({ estudiante }) => {
                   fontSize: 12,
                 }}
               >
-                {estudiante.estado_civil}
+                {estudiante.estadocivil}
               </Text>
             </View>
 

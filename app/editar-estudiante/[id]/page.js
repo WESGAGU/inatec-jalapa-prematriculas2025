@@ -17,6 +17,9 @@ const EditarEstudiante = ({ params }) => {
     fecha_nacimiento: "",
     edad: 14,
     sexo: "",
+    estadoCivil: "",
+    cedula: "",
+    municipionacimiento: "",
     departamento: "",
     municipio: "",
     comunidad: "",
@@ -216,6 +219,63 @@ const EditarEstudiante = ({ params }) => {
           <option value="">Seleccione...</option>
           <option value="Masculino">Masculino</option>
           <option value="Femenino">Femenino</option>
+        </select>
+      </div>
+
+       {/* Campo de estado civil*/}
+       <div className="mb-4">
+        <label className="block text-gray-700 mb-2">ESTADO CIVIL:</label>
+        <select
+          name="estadocivil"
+          value={formData.estadocivil}
+          onChange={handleChange}
+          className="w-full p-2 border rounded border-blue-300"
+          required
+        >
+          <option value="">Seleccione...</option>
+          <option value="Masculino">Soltero/a</option>
+          <option value="Femenino">Casado/a</option>
+          <option value="Femenino">Viudo/a</option>
+        </select>
+      </div>
+
+      {/* Campo de cedula */}
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-2">CÉDULA:</label>
+        <input
+          type="text"
+          name="cedula"
+          placeholder="Ex:489-xxxxx-xxxx, si no tiene omitir"
+          value={formData.cedula}
+          onChange={handleChange}
+          className="w-full p-2 border rounded border-blue-300"
+        />
+      </div>
+
+      {/* Campo de municipio de nacimiento */}
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-2">MUNICIPIO DONDE NACIO:</label>
+        <select
+          name="municipionacimiento"
+          value={formData.municipionacimiento}
+          onChange={handleChange}
+          className="w-full p-2 border rounded border-blue-300"
+          required
+        >
+          <option value="null">Seleccione...</option>
+          <option value="Jalapa">Jalapa</option>
+          <option value="Murra">Murra</option>
+          <option value="El Jicaro">El Jicaro</option>
+          <option value="Ocotal">Ocotal</option>
+          <option value="Quilalí">Quilalí</option>
+          <option value="Dipilto">Dipilto</option>
+          <option value="Ciudad Antigua">Ciudad Antigua</option>
+          <option value="Macuelizo">Macuelizo</option>
+          <option value="Mozonte">Mozonte</option>
+          <option value="San Fernando">San Fernando</option>
+          <option value="Wiwilí NS">Wiwilí NS</option>
+          <option value="Santa María">Santa María</option>
+          <option value="Otro">Otro</option>
         </select>
       </div>
 

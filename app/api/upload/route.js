@@ -34,6 +34,9 @@ export async function POST(request) {
     const fecha_registro = data.get("fecha_registro");
     const image1 = data.get("image1"); // Primera imagen
     const image2 = data.get("image2"); // Segunda imagen
+    const estadocivil = data.get("estadocivil");
+    const cedula = data.get("cedula");
+    const municipionacimiento = data.get("municipionacimiento");
 
     // Validar que se hayan subido ambas imágenes
     if (!image1 || !image2) {
@@ -77,8 +80,8 @@ export async function POST(request) {
       INSERT INTO datosEstudiantes (
         nombres, apellidos, fecha_nacimiento, edad, sexo, departamento, municipio, comunidad, direccion,
         personas_hogar, telefono, nivel_academico, tecnico, emergencia_nombres, emergencia_parentezco,
-        emergencia_telefono, docente, fecha_registro, documento, documento2
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
+        emergencia_telefono, docente, fecha_registro, documento, documento2, estadocivil, cedula, municipionacimiento
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23)
       RETURNING id
     `;
 
@@ -103,6 +106,9 @@ export async function POST(request) {
       fecha_registro,
       imageUrl1,
       imageUrl2,
+      estadocivil,
+      cedula,
+      municipionacimiento
     ];
 
     const result = await pool.query(query, values);

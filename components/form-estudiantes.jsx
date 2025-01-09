@@ -15,6 +15,9 @@ const FormEstudiantes = () => {
     fecha_nacimiento: '',
     edad: 14,
     sexo: '',
+    estadocivil: '',
+    cedula: '',
+    municipionacimiento: '',
     departamento: '',
     municipio: '',
     comunidad: '',
@@ -36,18 +39,33 @@ const FormEstudiantes = () => {
   const [preview2, setPreview2] = useState(null); // Vista previa de la segunda imagen
   const [isSubmitting, setIsSubmitting] = useState(false); // Estado para el indicador de carga
 
+  // Opciones dinámicas para el estado civil
+  const opcionesEstadoCivil = {
+    Masculino: ['Soltero', 'Casado', 'Viudo'],
+    Femenino: ['Soltera', 'Casada', 'Viuda'],
+  };
+
   // Manejar los cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Capitalización de nombres y apellidos
-    if (name === 'nombres' || name === 'apellidos' || name === 'emergencia_nombres' || name === 'direccion' || name === 'emergencia_parentezco' || name === 'comunidad') {
-      const words = value.split(' ');
-      const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
-      const capitalizedValue = capitalizedWords.join(' ');
-      setFormData({ ...formData, [name]: capitalizedValue });
+    // Si cambia el campo "sexo", reiniciar el campo "estadocivil"
+    if (name === 'sexo') {
+      setFormData({
+        ...formData,
+        [name]: value,
+        estadocivil: '', // Reiniciar el estado civil al cambiar el sexo
+      });
     } else {
-      setFormData({ ...formData, [name]: value });
+      // Capitalización de nombres y apellidos
+      if (name === 'nombres' || name === 'apellidos' || name === 'emergencia_nombres' || name === 'direccion' || name === 'emergencia_parentezco' || name === 'comunidad') {
+        const words = value.split(' ');
+        const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+        const capitalizedValue = capitalizedWords.join(' ');
+        setFormData({ ...formData, [name]: capitalizedValue });
+      } else {
+        setFormData({ ...formData, [name]: value });
+      }
     }
 
     // Validación para "TE en Gestión de Fincas Ganaderas"
@@ -144,7 +162,7 @@ const FormEstudiantes = () => {
         Swal.fire({
           icon: 'success',
           title: 'Éxito',
-          text: 'Matricula registrada exitosamente, se le contactará a inicios de Febrero para seguir con el proceso.',
+          text: 'Matricula registrada exitosamente, se le contactará a inicios de Febrero, Las clases inician el 3 de Febrero.',
         });
         // Limpiar el formulario después de enviar los datos
         setFormData({
@@ -153,6 +171,9 @@ const FormEstudiantes = () => {
           fecha_nacimiento: '',
           edad: 14,
           sexo: '',
+          estadocivil: '',
+          cedula: '',
+          municipionacimiento: '',
           departamento: '',
           municipio: '',
           comunidad: '',
@@ -261,9 +282,70 @@ const FormEstudiantes = () => {
         </select>
       </div>
 
+      {/* Campo de estado civil */}
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-2">ESTADO CIVIL:</label>
+        <select
+          name="estadocivil"
+          value={formData.estadocivil}
+          onChange={handleChange}
+          className="w-full p-2 border rounded border-blue-300"
+          required
+          disabled={!formData.sexo} // Deshabilitar si no se ha seleccionado un sexo
+        >
+          <option value="">Seleccione...</option>
+          {formData.sexo &&
+            opcionesEstadoCivil[formData.sexo].map((opcion, index) => (
+              <option key={index} value={opcion}>
+                {opcion}
+              </option>
+            ))}
+        </select>
+      </div>
+
+      {/* Campo de cedula */}
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-2">CÉDULA:</label>
+        <input
+          type="text"
+          name="cedula"
+          placeholder="Ex:489-xxxxx-xxxx, si no tiene omitir"
+          value={formData.cedula}
+          onChange={handleChange}
+          className="w-full p-2 border rounded border-blue-300"
+        />
+      </div>
+
+      {/* Campo de municipio de nacimiento */}
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-2">MUNICIPIO DONDE NACIO:</label>
+        <select
+          name="municipionacimiento"
+          value={formData.municipionacimiento}
+          onChange={handleChange}
+          className="w-full p-2 border rounded border-blue-300"
+          required
+        >
+          <option value="">Seleccione...</option>
+          <option value="Jalapa">Jalapa</option>
+          <option value="Murra">Murra</option>
+          <option value="El Jicaro">El Jicaro</option>
+          <option value="Ocotal">Ocotal</option>
+          <option value="Quilalí">Quilalí</option>
+          <option value="Dipilto">Dipilto</option>
+          <option value="Ciudad Antigua">Ciudad Antigua</option>
+          <option value="Macuelizo">Macuelizo</option>
+          <option value="Mozonte">Mozonte</option>
+          <option value="San Fernando">San Fernando</option>
+          <option value="Wiwilí NS">Wiwilí NS</option>
+          <option value="Santa María">Santa María</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+
       {/* Campo de departamento */}
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">DEPARTAMENTO:</label>
+        <label className="block text-gray-700 mb-2">DEPARTAMENTO DOMICILIAR:</label>
         <select
           name="departamento"
           value={formData.departamento}
@@ -271,7 +353,7 @@ const FormEstudiantes = () => {
           className="w-full p-2 border rounded border-blue-300"
           required
         >
-          <option value="null">Seleccione...</option>
+          <option value="">Seleccione departamento donde vive...</option>
           <option value="Nueva Segovia">Nueva Segovia</option>
           <option value="Otro">Otro</option>
         </select>
@@ -279,7 +361,7 @@ const FormEstudiantes = () => {
 
       {/* Campo de municipio */}
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">MUNICIPIO:</label>
+        <label className="block text-gray-700 mb-2">MUNICIPIO DOMICILIAR:</label>
         <select
           name="municipio"
           value={formData.municipio}
@@ -287,7 +369,7 @@ const FormEstudiantes = () => {
           className="w-full p-2 border rounded border-blue-300"
           required
         >
-          <option value="null">Seleccione...</option>
+          <option value="">Seleccione municipio donde vive..</option>
           <option value="Jalapa">Jalapa</option>
           <option value="Murra">Murra</option>
           <option value="El Jicaro">El Jicaro</option>
@@ -306,10 +388,11 @@ const FormEstudiantes = () => {
 
       {/* Campo de comunidad */}
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">COMUNIDAD:</label>
+        <label className="block text-gray-700 mb-2">COMUNIDAD DOMICILIAR:</label>
         <input
           type="text"
           name="comunidad"
+          placeholder="Ex: sector, barrio"
           value={formData.comunidad}
           onChange={handleChange}
           className="w-full p-2 border rounded border-blue-300"
@@ -319,7 +402,7 @@ const FormEstudiantes = () => {
 
       {/* Campo de dirección */}
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">DIRECCIÓN:</label>
+        <label className="block text-gray-700 mb-2">DIRECCIÓN DOMICILIAR:</label>
         <input
           type="text"
           name="direccion"
@@ -475,7 +558,7 @@ const FormEstudiantes = () => {
           className="w-full p-2 border rounded border-blue-300"
           required
         >
-          <option value="null">Seleccione...</option>
+          <option value="">Seleccione...</option>
           <option value="Omitir">--Omitir--</option>
           <option value="Anielka Margaret">Anielka Margaret</option>
           <option value="Maria José">Maria José</option>

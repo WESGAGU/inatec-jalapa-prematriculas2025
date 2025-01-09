@@ -35,6 +35,9 @@ export async function PUT(request) {
     const fecha_registro = data.get("fecha_registro");
     const image1 = data.get("image1"); // Nueva imagen 1
     const image2 = data.get("image2"); // Nueva imagen 2
+    const estadoCivil = data.get("estadoCivil");
+    const cedula = data.get("cedula");
+    const municipionacimiento = data.get("municipionacimiento");
 
     // Obtener las URLs actuales de las imágenes
     const { rows } = await pool.query("SELECT documento, documento2 FROM datosEstudiantes WHERE id = $1", [id]);
@@ -112,7 +115,10 @@ export async function PUT(request) {
         fecha_registro = $18,
         documento = $19,
         documento2 = $20
-      WHERE id = $21
+        estadoCivil = $21,
+        cedula = $22,
+        municipionacimiento = $23,
+      WHERE id = $
     `;
 
     const values = [
@@ -136,6 +142,9 @@ export async function PUT(request) {
       fecha_registro,
       imageUrl1,
       imageUrl2,
+      estadoCivil,
+      cedula,
+      municipionacimiento,
       id,
     ];
 
