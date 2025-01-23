@@ -35,13 +35,47 @@ export async function PUT(request) {
     const fecha_registro = data.get("fecha_registro");
     const image1 = data.get("image1"); // Nueva imagen 1
     const image2 = data.get("image2"); // Nueva imagen 2
-    const estadoCivil = data.get("estadoCivil");
+    const estadocivil = data.get("estadocivil");
     const cedula = data.get("cedula");
     const municipionacimiento = data.get("municipionacimiento");
 
+    // Validar campos obligatorios
+    if (
+      !id ||
+      !nombres ||
+      !apellidos ||
+      !fecha_nacimiento ||
+      !edad ||
+      !sexo ||
+      !departamento ||
+      !municipio ||
+      !comunidad ||
+      !direccion ||
+      !personas_hogar ||
+      !telefono ||
+      !nivel_academico ||
+      !tecnico ||
+      !emergencia_nombres ||
+      !emergencia_parentezco ||
+      !emergencia_telefono ||
+      !docente ||
+      !fecha_registro ||
+      !estadocivil ||
+      !municipionacimiento
+    ) {
+      return NextResponse.json(
+        { message: "Todos los campos son obligatorios" },
+        { status: 400 }
+      );
+    }
+
     // Obtener las URLs actuales de las imágenes
-    const { rows } = await pool.query("SELECT documento, documento2 FROM datosEstudiantes WHERE id = $1", [id]);
-    const { documento: currentDocumento1, documento2: currentDocumento2 } = rows[0];
+    const { rows } = await pool.query(
+      "SELECT documento, documento2 FROM datosEstudiantes WHERE id = $1",
+      [id]
+    );
+    const { documento: currentDocumento1, documento2: currentDocumento2 } =
+      rows[0];
 
     let imageUrl1 = currentDocumento1; // Mantener la URL actual si no se sube una nueva imagen
     let imageUrl2 = currentDocumento2; // Mantener la URL actual si no se sube una nueva imagen
@@ -62,10 +96,14 @@ export async function PUT(request) {
 
       imageUrl1 = uploadResponse1.secure_url;
 
-      // Eliminar la imagen anterior de Cloudinary
+      // Eliminar la imagen anterior de Cloudinary (si existe)
       if (currentDocumento1) {
-        const publicId1 = currentDocumento1.split("/").pop().split(".")[0];
-        await cloudinary.uploader.destroy(publicId1);
+        try {
+          const publicId1 = currentDocumento1.split("/").pop().split(".")[0];
+          await cloudinary.uploader.destroy(publicId1);
+        } catch (error) {
+          console.error("Error al eliminar la imagen anterior de Cloudinary:", error);
+        }
       }
     }
 
@@ -85,10 +123,14 @@ export async function PUT(request) {
 
       imageUrl2 = uploadResponse2.secure_url;
 
-      // Eliminar la imagen anterior de Cloudinary
+      // Eliminar la imagen anterior de Cloudinary (si existe)
       if (currentDocumento2) {
-        const publicId2 = currentDocumento2.split("/").pop().split(".")[0];
-        await cloudinary.uploader.destroy(publicId2);
+        try {
+          const publicId2 = currentDocumento2.split("/").pop().split(".")[0];
+          await cloudinary.uploader.destroy(publicId2);
+        } catch (error) {
+          console.error("Error al eliminar la imagen anterior de Cloudinary:", error);
+        }
       }
     }
 
@@ -114,11 +156,11 @@ export async function PUT(request) {
         docente = $17,
         fecha_registro = $18,
         documento = $19,
-        documento2 = $20
-        estadoCivil = $21,
+        documento2 = $20,
+        estadocivil = $21,
         cedula = $22,
-        municipionacimiento = $23,
-      WHERE id = $
+        municipionacimiento = $23
+      WHERE id = $24
     `;
 
     const values = [
@@ -142,7 +184,7 @@ export async function PUT(request) {
       fecha_registro,
       imageUrl1,
       imageUrl2,
-      estadoCivil,
+      estadocivil,
       cedula,
       municipionacimiento,
       id,

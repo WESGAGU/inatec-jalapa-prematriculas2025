@@ -4,8 +4,6 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; // Usa next/navigation en lugar de next/router
 import Swal from "sweetalert2";
 
-
-
 const EditarEstudiante = ({ params }) => {
   const router = useRouter();
   const paramsData = React.use(params); // Desenvuelve params usando React.use()
@@ -17,7 +15,7 @@ const EditarEstudiante = ({ params }) => {
     fecha_nacimiento: "",
     edad: 14,
     sexo: "",
-    estadoCivil: "",
+    estadocivil: "",
     cedula: "",
     municipionacimiento: "",
     departamento: "",
@@ -34,11 +32,29 @@ const EditarEstudiante = ({ params }) => {
     docente: "",
     fecha_registro: "",
   });
+
   const [file1, setFile1] = useState(null); // Estado para la nueva imagen 1
   const [file2, setFile2] = useState(null); // Estado para la nueva imagen 2
   const [preview1, setPreview1] = useState(""); // Vista previa de la imagen 1
   const [preview2, setPreview2] = useState(""); // Vista previa de la imagen 2
   const [loading, setLoading] = useState(true); // Estado para manejar la carga de datos
+  const [isSubmitting, setIsSubmitting] = useState(false); // Estado para el indicador de carga
+
+  // Opciones dinámicas para el estado civil
+  const opcionesEstadoCivil = {
+    Masculino: ['Soltero', 'Casado', 'Viudo'],
+    Femenino: ['Soltera', 'Casada', 'Viuda'],
+  };
+
+  // Función para formatear fechas en formato YYYY-MM-DD
+  const formatDate = (dateString) => {
+    if (!dateString) return ""; // Si no hay fecha, retorna vacío
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Meses son 0-indexados
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
 
   // Obtener los datos del estudiante al cargar el componente
   useEffect(() => {
@@ -61,8 +77,14 @@ const EditarEstudiante = ({ params }) => {
 
         const data = await response.json();
 
+        // Formatear las fechas antes de asignarlas al estado
+        const formattedData = {
+          ...data,
+          fecha_nacimiento: formatDate(data.fecha_nacimiento),
+          fecha_registro: formatDate(data.fecha_registro),
+        };
 
-        setFormData(data); // Llenar el formulario con los datos del estudiante
+        setFormData(formattedData); // Llenar el formulario con los datos del estudiante
         setPreview1(data.documento); // Mostrar la imagen 1 actual
         setPreview2(data.documento2); // Mostrar la imagen 2 actual
       } catch (error) {
@@ -83,7 +105,17 @@ const EditarEstudiante = ({ params }) => {
   // Manejar cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    // Si cambia el campo "sexo", reiniciar el campo "estadocivil"
+    if (name === 'sexo') {
+      setFormData({
+        ...formData,
+        [name]: value,
+        estadocivil: '', // Reiniciar el estado civil al cambiar el sexo
+      });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   // Manejar la selección de la nueva imagen 1
@@ -107,6 +139,7 @@ const EditarEstudiante = ({ params }) => {
   // Enviar datos al backend
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true); // Activar el indicador de carga
 
     const formDataToSend = new FormData();
     formDataToSend.append("id", id);
@@ -132,7 +165,7 @@ const EditarEstudiante = ({ params }) => {
         title: "Éxito",
         text: result.message,
       });
-      router.push("/pages/verPrematriculas"); 
+      router.push("/pages/verPrematriculas");
     } catch (error) {
       console.error("Error al actualizar el estudiante:", error);
       Swal.fire({
@@ -140,6 +173,8 @@ const EditarEstudiante = ({ params }) => {
         title: "Error",
         text: "Error al actualizar el estudiante. Por favor, inténtalo de nuevo.",
       });
+    } finally {
+      setIsSubmitting(false); // Desactivar el indicador de carga
     }
   };
 
@@ -153,7 +188,6 @@ const EditarEstudiante = ({ params }) => {
 
       {/* Campos del formulario */}
       <div className="mb-4">
-
         {/* Nombres */}
         <label className="block text-gray-700 mb-2">NOMBRES:</label>
         <input
@@ -192,8 +226,8 @@ const EditarEstudiante = ({ params }) => {
         />
       </div>
 
-       {/* Campo de edad */}
-       <div className="mb-4">
+      {/* Campo de edad */}
+      <div className="mb-4">
         <label className="block text-gray-700 mb-2">EDAD:</label>
         <input
           type="number"
@@ -206,8 +240,8 @@ const EditarEstudiante = ({ params }) => {
         />
       </div>
 
-       {/* Campo de sexo */}
-       <div className="mb-4">
+      {/* Campo de sexo */}
+      <div className="mb-4">
         <label className="block text-gray-700 mb-2">SEXO:</label>
         <select
           name="sexo"
@@ -222,8 +256,8 @@ const EditarEstudiante = ({ params }) => {
         </select>
       </div>
 
-       {/* Campo de estado civil*/}
-       <div className="mb-4">
+      {/* Campo de estado civil */}
+      <div className="mb-4">
         <label className="block text-gray-700 mb-2">ESTADO CIVIL:</label>
         <select
           name="estadocivil"
@@ -231,11 +265,15 @@ const EditarEstudiante = ({ params }) => {
           onChange={handleChange}
           className="w-full p-2 border rounded border-blue-300"
           required
+          disabled={!formData.sexo} // Deshabilitar si no se ha seleccionado un sexo
         >
           <option value="">Seleccione...</option>
-          <option value="Masculino">Soltero/a</option>
-          <option value="Femenino">Casado/a</option>
-          <option value="Femenino">Viudo/a</option>
+          {formData.sexo &&
+            opcionesEstadoCivil[formData.sexo].map((opcion, index) => (
+              <option key={index} value={opcion}>
+                {opcion}
+              </option>
+            ))}
         </select>
       </div>
 
@@ -262,7 +300,7 @@ const EditarEstudiante = ({ params }) => {
           className="w-full p-2 border rounded border-blue-300"
           required
         >
-          <option value="null">Seleccione...</option>
+          <option value="">Seleccione...</option>
           <option value="Jalapa">Jalapa</option>
           <option value="Murra">Murra</option>
           <option value="El Jicaro">El Jicaro</option>
@@ -279,8 +317,8 @@ const EditarEstudiante = ({ params }) => {
         </select>
       </div>
 
-       {/* Campo de departamento */}
-       <div className="mb-4">
+      {/* Campo de departamento */}
+      <div className="mb-4">
         <label className="block text-gray-700 mb-2">DEPARTAMENTO:</label>
         <select
           name="departamento"
@@ -289,7 +327,7 @@ const EditarEstudiante = ({ params }) => {
           className="w-full p-2 border rounded border-blue-300"
           required
         >
-          <option value="null">Seleccione...</option>
+          <option value="">Seleccione...</option>
           <option value="Nueva Segovia">Nueva Segovia</option>
           <option value="Otro">Otro</option>
         </select>
@@ -305,7 +343,7 @@ const EditarEstudiante = ({ params }) => {
           className="w-full p-2 border rounded border-blue-300"
           required
         >
-          <option value="null">Seleccione...</option>
+          <option value="">Seleccione...</option>
           <option value="Jalapa">Jalapa</option>
           <option value="Murra">Murra</option>
           <option value="El Jicaro">El Jicaro</option>
@@ -357,7 +395,7 @@ const EditarEstudiante = ({ params }) => {
           name="personas_hogar"
           value={formData.personas_hogar}
           onChange={handleChange}
-          placeholder='Numero de personas que viven en su hogar'
+          placeholder="Número de personas que viven en su hogar"
           className="w-full p-2 border rounded border-blue-300"
           required
         />
@@ -376,9 +414,9 @@ const EditarEstudiante = ({ params }) => {
         />
       </div>
 
-      {/* Campo de Nivel Academico */}
+      {/* Campo de Nivel Académico */}
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">NIVEL ACADEMICO:</label>
+        <label className="block text-gray-700 mb-2">NIVEL ACADÉMICO:</label>
         <select
           name="nivel_academico"
           value={formData.nivel_academico}
@@ -394,7 +432,7 @@ const EditarEstudiante = ({ params }) => {
       </div>
 
       {/* Campo de técnico */}
-      <h2 className='block text-center font-bold mb-5'>CARRERA TÉCNICA QUE DESEA ESTUDIAR</h2>
+      <h2 className="block text-center font-bold mb-5">CARRERA TÉCNICA QUE DESEA ESTUDIAR</h2>
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">TÉCNICO:</label>
         <select
@@ -405,24 +443,26 @@ const EditarEstudiante = ({ params }) => {
           required
         >
           <option value="">Seleccione...</option>
-          <optgroup label='Turno Diurno'>
-            <option value="TG en Computación ">TG en Computación</option>
+          <optgroup label="Turno Diurno">
+            <option value="TG en Computación">TG en Computación</option>
             <option value="TG en Contabilidad">TG en Contabilidad</option>
-            <option value="TG en Administracón">TG en Administracón</option>
+            <option value="TG en Administración">TG en Administración</option>
             <option value="TG en Veterinaria">TG en Veterinaria</option>
             <option value="TG en Agropecuaria">TG en Agropecuaria</option>
           </optgroup>
-          <optgroup label='Turno Sabatino'>
+          <optgroup label="Turno Sabatino">
             <option value="TG en Zootecnia">TG en Zootecnia</option>
-            <option value="TG en Agronomia">TG en Agronomia</option>
-            <option value="TG en Riego Agricola">TG en Riego Agricola</option>
-            <option value="TE en Gestión de Fincas Ganaderas">TE en Gestión de Fincas Ganaderas</option>
+            <option value="TG en Agronomía">TG en Agronomía</option>
+            <option value="TG en Riego Agrícola">TG en Riego Agrícola</option>
+            <option value="TE en Gestión de Fincas Ganaderas">
+              TE en Gestión de Fincas Ganaderas
+            </option>
           </optgroup>
         </select>
       </div>
 
-       {/* Campo de emergencia nombre */}
-       <h2 className='block text-center font-bold mb-5 mt-5'>EN CASO DE EMERGENCIA LLAMAR A</h2>
+      {/* Campo de emergencia nombre */}
+      <h2 className="block text-center font-bold mb-5 mt-5">EN CASO DE EMERGENCIA LLAMAR A</h2>
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">NOMBRES Y APELLIDOS DE EMERGENCIA:</label>
         <input
@@ -435,8 +475,8 @@ const EditarEstudiante = ({ params }) => {
         />
       </div>
 
-       {/* Campo de emergencia parentesco */}
-       <div className="mb-4">
+      {/* Campo de emergencia parentesco */}
+      <div className="mb-4">
         <label className="block text-gray-700 mb-2">PARENTESCO DE EMERGENCIA:</label>
         <input
           type="text"
@@ -461,12 +501,12 @@ const EditarEstudiante = ({ params }) => {
         />
       </div>
 
-       {/* Campo de docente */}
-       <h2 className='block text-center font-bold mb-5 mt-5'>OTROS DATOS</h2>
+      {/* Campo de docente */}
+      <h2 className="block text-center font-bold mb-5 mt-5">OTROS DATOS</h2>
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">DOCENTE:</label>
-        <span className='block text-gray-500 mb-3 text-md md:text-lg'>En caso de que algun Docente le recomendo la prematricula en linea seleccionarlo
-          si no omitir
+        <span className="block text-gray-500 mb-3 text-md md:text-lg">
+          En caso de que algún Docente le recomendó la prematrícula en línea selecciónelo, si no omita.
         </span>
         <select
           name="docente"
@@ -475,7 +515,7 @@ const EditarEstudiante = ({ params }) => {
           className="w-full p-2 border rounded border-blue-300"
           required
         >
-          <option value="null">Seleccione...</option>
+          <option value="">Seleccione...</option>
           <option value="Omitir">--Omitir--</option>
           <option value="Anielka Margaret">Anielka Margaret</option>
           <option value="Maria José">Maria José</option>
@@ -502,10 +542,9 @@ const EditarEstudiante = ({ params }) => {
         />
       </div>
 
-
       {/* Campo para la nueva imagen 1 */}
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">DOCUEMENTO CEDULA O PARTIDA DE NACIMIENTO:</label>
+        <label className="block text-gray-700 mb-2">DOCUMENTO CÉDULA O PARTIDA DE NACIMIENTO:</label>
         <input
           type="file"
           onChange={handleFileChange1}
@@ -529,12 +568,20 @@ const EditarEstudiante = ({ params }) => {
         )}
       </div>
 
-      {/* Botón de enviar */}
+      {/* Botón de enviar con indicador de carga */}
       <button
         type="submit"
-        className="p-3 bg-blue-500 text-white rounded w-full"
+        className="p-3 bg-blue-500 text-white rounded w-full flex justify-center items-center"
+        disabled={isSubmitting} // Deshabilitar el botón mientras se envía
       >
-        Guardar Cambios
+        {isSubmitting ? (
+          <div className="flex items-center">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+            Guardando...
+          </div>
+        ) : (
+          "Guardar Cambios"
+        )}
       </button>
     </form>
   );

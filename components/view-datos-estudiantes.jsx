@@ -331,7 +331,7 @@ const ViewDatosEstudiantes = () => {
                   src={estudiante.documento2}
                   alt="Documento"
                   width={150}
-                  height={50}
+                  height={80}
                 />
               </td>
               <td className="px-6 py-4 whitespace-nowrap border border-blue-300">
