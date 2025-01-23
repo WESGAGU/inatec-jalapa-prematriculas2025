@@ -477,6 +477,9 @@ const FormEstudiantes = () => {
       </h2>
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">TÉCNICO:</label>
+        <span className="block text-gray-500 mb-3 text-sm md:text-md">
+          Las carreras que estan Deshabilitadas, no se encuentran mas cupos disponibles.
+        </span>
         <select
           name="tecnico"
           value={formData.tecnico}
@@ -486,19 +489,21 @@ const FormEstudiantes = () => {
         >
           <option value="">Seleccione...</option>
           <optgroup label="Turno Diurno">
-            <option value="TG en Computación">TG en Computación</option>
+            <option value="TG en Computación" disabled>TG en Computación</option>
             <option value="TG en Contabilidad">TG en Contabilidad</option>
             <option value="TG en Administración">TG en Administración</option>
             <option value="TG en Veterinaria">TG en Veterinaria</option>
             <option value="TG en Agropecuaria">TG en Agropecuaria</option>
           </optgroup>
           <optgroup label="Turno Sabatino">
+            <option value="TG en Zootecnia" disabled>TG en Zootecnia</option>
+            <option value="TG en Agronomía" disabled>TG en Agronomía</option>
+            <option value="TG en Riego Agrícola">TG en Riego Agrícola</option>
+          </optgroup>
+          <optgroup label="Turno Dominical">
+          <option value="TG en Computación" disabled>TG en Computación</option>
             <option value="TG en Zootecnia">TG en Zootecnia</option>
             <option value="TG en Agronomía">TG en Agronomía</option>
-            <option value="TG en Riego Agrícola">TG en Riego Agrícola</option>
-            <option value="TE en Gestión de Fincas Ganaderas">
-              TE en Gestión de Fincas Ganaderas
-            </option>
           </optgroup>
         </select>
       </div>
@@ -605,12 +610,12 @@ const FormEstudiantes = () => {
           <AccordionItem value="item-1">
             <AccordionTrigger className="text-md hover:text-blue-400">Leer importante...</AccordionTrigger>
             <AccordionContent>
-              <span className="block text-blue-700 mb-3 text-md md:text-lg">
-                Aquí deberá subir una imagen de su Cédula de identidad, en caso de ser menor de edad o por algún motivo no tiene cédula actualmente, tendra que subir una imagen de su partida de nacimiento que verifique la escritura de sus Nombres y Apellios.
+            <span className="block text-blue-700 mb-3 text-md md:text-lg">
+            Aquí deberá subir una imagen de su Cédula de identidad, en caso de ser menor de edad o por algún motivo no tiene cédula actualmente, tendra que subir una imagen de su partida de nacimiento que verifique la escritura de sus Nombres y Apellios.
               </span>
-
+              
               <Image
-                src="partidaCedula.webp"
+                src="/partidaCedula.webp"
                 width={200}
                 height={100}
                 alt="indicativo"
@@ -619,6 +624,7 @@ const FormEstudiantes = () => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+
 
         <div className="relative border border-blue-300 rounded p-2 mt-2">
           <input
@@ -655,7 +661,6 @@ const FormEstudiantes = () => {
                 de estar en secundaria tendra que subir una imagen de sus notas del año que esta cursando actualmente,  &quot;tambien puede tomarle fotos a su boletin de notas&quot;.
               </span>
               
-
               <Image
                 src="/diplomaNotas.webp"
                 width={200}
