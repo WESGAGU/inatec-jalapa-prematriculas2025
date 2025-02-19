@@ -496,7 +496,7 @@ const FormEstudiantes = () => {
             <option value="TG en Agropecuaria">TG en Agropecuaria</option>
           </optgroup>
           <optgroup label="Turno Sabatino">
-            <option value="TG en Zootecnia" disabled>TG en Zootecnia</option>
+            <option value="TG en Zootecnia">TG en Zootecnia</option>
             <option value="TG en Agronomía" disabled>TG en Agronomía</option>
             <option value="TG en Riego Agrícola">TG en Riego Agrícola</option>
           </optgroup>
